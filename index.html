@@ -36,7 +36,7 @@ body{min-height:100dvh;background-color:#04182a}
 .bottom .nav-icon{height:27px;display:flex;align-items:center;justify-content:center}.bottom .nav-icon svg{height:25px;width:25px}.bottom .nav-icon .ball{width:24px;height:24px}
 .crossed-swords{font-size:28px;font-weight:900;line-height:1.2}
 @media(max-width:380px){.slot-hint{font-size:10px}.drop-slot{gap:6px}}
-</style></head><body><div class="app">
+</style><link rel="stylesheet" href="home.css"></head><body><div class="app">
 <header class="top"><div class="brand"><span class="ball"></span><div><strong>POKÉMON ARENA</strong><small>ALPHA 0.9 · MOBILE</small></div></div><button class="gear" onclick="showSettings()" aria-label="Configurações"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M12 2v3m0 14v3M2 12h3m14 0h3M4.9 4.9 7 7m10 10 2.1 2.1m0-14.2L17 7M7 17l-2.1 2.1"/></svg></button></header>
 <div id="preview-warning" style="padding:12px 14px;background:#143b59;border-bottom:1px solid #75a8ca;color:#fff;font-size:12px;line-height:1.5"><strong>Prévia estática.</strong> Para jogar no iPhone, abra este arquivo em um navegador que permita JavaScript, preferencialmente por um endereço HTTPS. A visualização de arquivos dentro do ChatGPT pode bloquear scripts.</div><main id="view"><section class="screen"><div class="card"><div class="card-title">SELECIONE SEU TIME</div><p class="sub">Carregando os Pokémon...</p></div></section></main>
 <nav class="bottom"><button id="nav-team" onclick="navigate('team')"><b class="nav-icon"><span class="ball"></span></b>Time</button><button id="nav-arena" onclick="navigate('arena')"><b class="nav-icon"><svg viewBox="0 0 24 24"><path d="M4 4 20 20M20 4 4 20"/></svg></b>Batalha</button><button id="nav-config" onclick="showSettings()"><b class="nav-icon"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M12 2v3m0 14v3M2 12h3m14 0h3"/></svg></b>Config.</button></nav>
@@ -126,4 +126,4 @@ document.addEventListener('pointerup',ev=>{const d=dragState;if(!d||d.kind!=='po
 document.addEventListener('pointercancel',()=>{dragState?.ghost?.remove();endDrag()}, {passive:true});
 render();
 
-</script></body></html>
+</script><script src="home.js"></script></body></html>
