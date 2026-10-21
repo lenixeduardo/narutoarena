@@ -129,3 +129,36 @@ body.home-mode .app{padding-bottom:0!important}
 /* A arena permanece visível atrás da moldura até o rodapé da viewport. */
 .home-screen{background:linear-gradient(180deg,#b5dbf7 0%,#d9c7a4 100%)}
 @media(min-width:681px){.home-sky{background-color:#d9c7a4}}
+
+/* v1.2 — ficha de habilidades, exibida acima da grade de Pokémon */
+.home-left{min-width:0}
+.home-details{margin:0 0 14px;background:linear-gradient(155deg,#0c3158,#09213e 80%);color:#f7fbff;border:2px solid #d32b43;border-top:5px solid #ee4059;border-radius:10px;box-shadow:0 8px 23px #102b4d55,inset 0 1px 0 #ffffff25;overflow:hidden;animation:homeDetailsIn .18s ease-out}
+.home-details-head{display:flex;align-items:center;gap:12px;padding:12px 14px 9px;border-bottom:1px solid #719bc15e;background:linear-gradient(90deg,#164a77a8,#0c2746)}
+.home-details-portrait{width:66px;height:66px;object-fit:cover;object-position:center 32%;border:2px solid #dbeeff;border-radius:7px;background:#0b3d65;flex:none}
+.home-details-title{flex:1;min-width:0}
+.home-details-eyebrow{display:block;color:#ffc6a0;font-size:10px;font-weight:900;letter-spacing:.9px}
+.home-details-title h2{font-size:21px;line-height:1.1;margin:5px 0;color:#fff;letter-spacing:.1px}
+.home-type{display:inline-block;border-radius:4px;padding:2px 8px;background:#e9f5ff1e;border:1px solid #a8cce960;font-size:11px;font-weight:800;color:#c9e5ff}
+.home-details-close{flex:none;align-self:flex-start;border:1px solid #83a9c7;border-radius:7px;background:#092442;color:#fff;width:32px;height:32px;font-size:25px;line-height:1;cursor:pointer}
+.home-details-close:hover{background:#254f74}
+.home-abilities{list-style:none;margin:0;padding:10px 12px;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+.home-ability{display:flex;align-items:flex-start;gap:9px;min-width:0;min-height:82px;padding:8px;border-radius:7px;border:1px solid #426b90;background:#123c63c9}
+.home-ability img{width:66px;height:66px;object-fit:cover;object-position:center;border-radius:5px;border:1px solid #739fc3;flex:none;background:#0a2949}
+.home-ability-copy{min-width:0;flex:1}
+.home-ability-top{display:flex;align-items:baseline;justify-content:space-between;gap:5px;flex-wrap:wrap}
+.home-ability-top strong{font-size:12px;line-height:1.2;color:#fff}
+.home-ability-top span{font-size:9px;white-space:nowrap;color:#ffe69c;font-weight:900}
+.home-ability-copy p{font-size:11px;line-height:1.35;color:#dcebf8;margin:5px 0}
+.home-ability-copy small{font-size:10px;line-height:1.3;color:#a9d4fa;display:block}
+.home-details-footer{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:0 12px 12px}
+.home-details-footer>span{font-size:11px;color:#c4dcef;line-height:1.4}
+.home-details-action{border:1px solid #fff7c2;background:linear-gradient(#ffdd74,#efa82c);color:#14243b;font-size:11px;font-weight:900;padding:10px 12px;border-radius:6px;cursor:pointer;white-space:nowrap;box-shadow:0 3px 0 #9a5d13}
+.home-details-action:hover:not(:disabled){filter:brightness(1.07)}
+.home-details-action:disabled{opacity:.55;cursor:not-allowed;box-shadow:none}
+.home-details button:focus-visible{outline:3px solid #4ac9ff;outline-offset:2px}
+@keyframes homeDetailsIn{from{opacity:0;transform:translateY(-6px)}to{opacity:1;transform:translateY(0)}}
+@media(max-width:1099px){.home-abilities{grid-template-columns:1fr}}
+@media(max-width:680px){.home-details{margin-bottom:10px}.home-details-head{padding:10px;gap:9px}.home-details-portrait{width:58px;height:58px}.home-details-title h2{font-size:19px}.home-abilities{padding:8px;gap:6px}.home-ability{min-height:68px;padding:6px}.home-ability img{width:56px;height:56px}.home-ability-copy p{margin:3px 0}.home-details-footer{flex-wrap:wrap;gap:7px;padding:0 8px 10px}.home-details-action{width:100%;padding:10px}.home-details-footer>span{font-size:10px}}
+@media(prefers-reduced-motion:reduce){.home-details{animation:none}}
+/* Mantém o conteúdo legível acima da textura semitransparente da moldura. */
+.home-content{position:relative;z-index:6}
