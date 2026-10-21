@@ -62,3 +62,70 @@ body.home-mode #view{width:100%;min-height:100dvh}
 .home-frame>.home-frameball{z-index:6}
 .home-frame:after{content:'';position:absolute;inset:-19px -17px;pointer-events:none;background:url('assets/roster-frame.png') center/100% 100% no-repeat;z-index:5}
 @media(max-width:680px){.home-sky{height:350px;background-position:77% center;background-size:auto 350px}.home-frame:after{inset:-13px -9px}}
+
+/* v1.1 — Refinamento de fidelidade ao mockup aprovado */
+.home-screen{font-family:Inter,Arial,Helvetica,sans-serif;background:#e4eff6}
+.home-container{max-width:1320px;padding-top:9px;padding-bottom:20px}
+.home-sky{height:100%;min-height:720px;background-position:center top;background-size:cover}
+.home-sky:after{background:linear-gradient(180deg,transparent 54%,#d8eaf4 100%)}
+.home-hero{height:clamp(265px,22vw,335px);padding:0 16px 16px}
+.home-modes{gap:14px}
+.home-modebtn{min-height:56px;border-radius:7px;border-bottom-width:3px;font-size:clamp(11px,1.1vw,15px);box-shadow:0 4px 11px #153d6177,inset 0 1px 0 #fff}
+.home-modebtn .home-ball{width:36px;height:36px}
+.home-frame{background:linear-gradient(145deg,#f0f8fcf8,#f8fcfff8 60%,#e7f3faf7);min-height:0}
+.home-content{grid-template-columns:minmax(0,1.95fr) minmax(320px,.94fr);gap:24px;padding:20px 22px 17px}
+.home-roster{gap:7px}
+.home-poke{aspect-ratio:1.36;border-radius:4px;border-width:2px;background:linear-gradient(145deg,#79b8e8,#1c466e)}
+.home-poke img{object-position:center 31%}
+.home-poke.locked{display:block;position:relative;opacity:1;background:radial-gradient(circle at 50% 22%,#d5f0ff 0%,#8bc5e6 49%,#36638e 100%);border-color:#395c7c;cursor:not-allowed}
+.home-poke.locked img{width:100%;height:100%;object-fit:contain;object-position:center;filter:saturate(.92);padding:2px 4px 0}
+.home-poke.locked:after{content:'';position:absolute;inset:55% 0 0;background:linear-gradient(transparent,#051e35ad);pointer-events:none}
+.home-locked-label{position:absolute;z-index:1;left:5px;bottom:4px;font-size:10px;color:#fff;font-weight:800;text-shadow:0 1px 3px #000;letter-spacing:.15px}
+.home-lock-symbol{position:absolute;z-index:2;right:4px;top:4px;font-size:9px;border-radius:50%;width:17px;height:17px;display:grid;place-items:center;background:#0c2948e3;color:#ffdf85;border:1px solid #e3d6ad}
+.home-roster-controls{margin-top:12px}
+.home-player{grid-template-columns:98px 1fr;gap:13px;min-height:107px;padding:4px 0 8px;border-bottom:1px solid #d0e0eb}
+.home-player-avatar{width:98px;height:98px;border:2px solid #16314a;border-radius:5px;object-position:center 24%}
+.home-player-info strong{font-size:16px;letter-spacing:-.2px;margin:3px 0 10px}
+.home-player-info p{font-size:12px;line-height:1.5}
+.home-team{gap:9px;margin-top:12px}
+.home-slot{aspect-ratio:1.1;background:linear-gradient(150deg,#fff,#f1f6fa);font-size:clamp(42px,4.6vw,70px);border-radius:4px;border-color:#35455a}
+.home-team-title{margin:8px 0 2px;display:flex;align-items:center;justify-content:center;gap:8px;font-size:11px}
+.home-team-count{background:#d9e9f5;border:1px solid #a6bfce;color:#234762;padding:2px 6px;border-radius:12px}
+.home-team-actions{margin-top:12px}
+.home-team-actions button{font-size:12px;padding:11px 8px}
+.home-drag-hint{margin:6px 0 0}
+.home-status:empty{display:none}
+.home-toolbar .home-pill{backdrop-filter:blur(6px)}
+.home-hero:before{background:linear-gradient(0deg,#d6eaf008,transparent 40%)}
+@media(min-width:1100px){.home-roster{grid-template-columns:repeat(6,minmax(0,1fr))}.home-content{padding:18px 23px 16px}.home-frame{min-height:0}}
+@media(min-width:681px) and (max-width:1099px){.home-content{grid-template-columns:minmax(0,1.5fr) minmax(300px,.95fr);gap:16px;padding:16px}.home-roster{grid-template-columns:repeat(6,minmax(0,1fr))}.home-poke{aspect-ratio:1.14}.home-hero{height:280px}.home-player{grid-template-columns:80px 1fr}.home-player-avatar{width:80px;height:80px}}
+@media(max-width:680px){
+ .home-container{width:calc(100% - 18px);padding-top:6px;padding-bottom:14px}
+ .home-sky{height:100%;min-height:780px;background-position:74% top;background-size:auto 490px;background-repeat:no-repeat;background-color:#c7e7ff}
+ .home-sky:after{background:linear-gradient(180deg,transparent 32%,#c7e7ff 66%)}
+ .home-hero{height:258px;padding:0 3px 10px}
+ .home-modebtn{min-height:52px;font-size:9px;border-bottom-width:3px}
+ .home-content{padding:11px 10px 12px;gap:11px}
+ .home-roster{grid-template-columns:repeat(3,minmax(0,1fr));max-height:226px;gap:5px;padding:2px;overflow-y:auto}
+ .home-poke{aspect-ratio:1.36}
+ .home-poke.locked .home-locked-label{font-size:9px}
+ .home-roster-controls{margin-top:7px}
+ .home-player{grid-template-columns:67px 1fr;gap:9px;min-height:70px;padding:0 0 8px}
+ .home-player-avatar{width:67px;height:67px}
+ .home-player-info strong{font-size:13px;margin:0 0 2px}
+ .home-player-info p{font-size:10px;line-height:1.4}
+ .home-team{margin-top:7px;gap:7px}
+ .home-slot{aspect-ratio:1.34;font-size:43px}
+ .home-team-title{font-size:10px;margin:6px 0 1px}
+ .home-team-actions{margin-top:7px}
+ .home-team-actions button{padding:10px 4px}
+ .home-drag-hint{font-size:10px;margin:3px 0 0}
+}
+/* v1.1.1 — composição final e remoção do espaço inferior herdado do jogo mobile */
+body.home-mode .app{padding-bottom:0!important}
+@media(min-width:681px){.home-sky{background-position:center -110px}}
+@media(min-width:681px){.home-sky{background-size:100% auto;background-position:center -28px;background-repeat:no-repeat;background-color:#c6e7fb}}
+@media(min-width:681px){.home-sky{background-position:center -98px}}
+/* A arena permanece visível atrás da moldura até o rodapé da viewport. */
+.home-screen{background:linear-gradient(180deg,#b5dbf7 0%,#d9c7a4 100%)}
+@media(min-width:681px){.home-sky{background-color:#d9c7a4}}
