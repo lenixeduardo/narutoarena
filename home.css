@@ -320,3 +320,6 @@ body.home-mode .app{padding-bottom:0!important}
  .home-mission-unlock-link{font-size:10px;padding:7px 9px;margin-top:8px}
  .home-poke.locked .home-locked-label small{font-size:7px;letter-spacing:.15px}
 }
+
+/* Ação defensiva universal na ficha do Pokémon */
+.home-dodge-hint{font-size:11px;line-height:1.4;color:#294b65;background:#eaf4fb;border:1px solid #c1d7e8;border-radius:6px;padding:8px 10px;margin:8px 0}
