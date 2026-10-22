@@ -56,7 +56,7 @@
  window.homeFocusSearch=function(){document.getElementById('home-search')?.focus()};
  window.homeFocusProfile=function(){document.getElementById('home-profile')?.scrollIntoView({behavior:'smooth',block:'center'})};
  window.homeRegion=function(v){};
- window.homeMissions=function(){document.getElementById('home-status').textContent='Missões: em desenvolvimento.'};
+ window.homeMissions=function(){window.location.href='./missions.html'};
  window.homeMenu=function(){document.getElementById('home-status').textContent='Selecione três Pokémon para começar.'};
  window.homeSlotClick=function(i){if(state.picked[i]!==undefined)removeSlot(i);else document.getElementById('home-search')?.focus()};
  window.homeStart=function(selected){mode=selected;if(state.picked.length!==3){const n=document.getElementById('home-status');if(n)n.textContent='Selecione exatamente 3 Pokémon antes de iniciar.';return}prepare();startBattle()};
