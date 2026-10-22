@@ -1,0 +1,74 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#0d3765">
+<meta name="description" content="Missões de desbloqueio de Pokémon no Pokémon Arena.">
+<title>Missões | Pokémon Arena</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+:root{font-family:Inter,system-ui,Arial,sans-serif;color:#112641;background:#dbe9f4;font-synthesis:none}
+*{box-sizing:border-box}body{margin:0;min-height:100vh;background:linear-gradient(180deg,#083c80a8,#dcecf1d9 40%,#f1f6fa),url('assets/home-background.webp') center top/cover fixed no-repeat}
+button,a{font:inherit}a{color:inherit;text-decoration:none}
+.shell{width:min(1180px,calc(100% - 32px));margin:0 auto;padding:26px 0 55px}
+.topbar{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:44px}
+.brand{display:flex;align-items:center;gap:11px;color:white;font-size:14px;font-weight:900;letter-spacing:.5px;text-shadow:0 2px 8px #06244c}
+.ball{width:31px;height:31px;border:3px solid #102d4b;border-radius:50%;background:linear-gradient(#ef3547 0 44%,#152e47 44% 56%,white 56%);position:relative;display:inline-block;flex:none;box-shadow:0 2px 5px #05244366}
+.ball:after{content:'';position:absolute;width:9px;height:9px;top:50%;left:50%;transform:translate(-50%,-50%);border-radius:50%;background:white;border:2px solid #122e4a}
+.back{color:#eaf5ff;border:1px solid #9bc4e4a0;background:#0d345fe6;padding:11px 16px;border-radius:8px;font-size:12px;font-weight:800;transition:background .2s}
+.back:hover{background:#205588}.back:focus-visible,.card:focus-visible{outline:3px solid #ffcd52;outline-offset:3px}
+.hero{color:white;text-align:center;margin:0 auto 31px;max-width:720px;text-shadow:0 2px 10px #052953}
+.eyebrow{font-size:12px;font-weight:900;letter-spacing:2.6px;color:#ffe28c;text-transform:uppercase}
+h1{font-size:clamp(32px,5vw,54px);line-height:1.05;margin:11px 0 12px;font-weight:900}
+.hero p{font-size:15px;line-height:1.6;margin:0;color:#f4faff}
+.mission-list{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:19px}
+.card{position:relative;overflow:hidden;background:#f8fcff;border:1px solid #e7f0f8;border-radius:15px;box-shadow:0 12px 30px #0b315652,0 3px 0 #c6dce9;min-width:0}
+.art{height:244px;position:relative;overflow:hidden;isolation:isolate}
+.art:before{content:'';position:absolute;inset:0;z-index:-2}
+.card.fire .art:before{background:radial-gradient(ellipse at 67% 45%,#ffb85b 0%,transparent 39%),linear-gradient(145deg,#f9cc8b,#ec7b55 50%,#6b8062)}
+.card.water .art:before{background:radial-gradient(ellipse at 58% 54%,#a7f5ff,transparent 50%),linear-gradient(140deg,#96d7ea,#237db4 67%,#1d517d)}
+.card.sun .art:before{background:radial-gradient(circle at 72% 16%,#fff7a3,transparent 33%),linear-gradient(145deg,#e7f5ad,#77bf86 60%,#4d966e)}
+.art:after{content:'';position:absolute;inset:0;background:linear-gradient(0deg,#061e38aa,transparent 43%);pointer-events:none}
+.art img{position:absolute;inset:4% 0 0;width:100%;height:98%;object-fit:contain;filter:drop-shadow(0 13px 12px #11263d50)}
+.tag{position:absolute;top:15px;left:15px;z-index:1;border-radius:20px;background:#0b284adf;color:#fff;padding:8px 11px;font-size:10px;font-weight:900;letter-spacing:.7px;display:flex;align-items:center;gap:6px;border:1px solid #ffffff40}
+.tag:before{content:'◆';color:#ffdb73}
+.art-label{position:absolute;z-index:1;bottom:16px;left:19px;color:white;font-size:12px;font-weight:800;letter-spacing:1.6px;text-shadow:0 2px 7px #001}
+.body{padding:23px 21px 20px}
+.number{font-size:11px;color:#527493;font-weight:900;letter-spacing:1.2px}
+h2{font-size:21px;line-height:1.25;margin:8px 0 12px;letter-spacing:-.5px}
+.desc{font-size:13px;color:#536b83;line-height:1.6;margin:0;min-height:84px}
+.condition{display:flex;align-items:center;gap:11px;padding:13px 0;border-top:1px solid #e0eaf2;border-bottom:1px solid #e0eaf2;margin:16px 0}
+.condition-icon{width:38px;height:38px;display:grid;place-items:center;border-radius:9px;background:#eaf2fa;color:#183d61;font-size:20px;flex:none}
+.condition strong{display:block;font-size:12px}.condition span{display:block;font-size:11px;color:#647c93;margin-top:4px}
+.progress-head{display:flex;justify-content:space-between;align-items:center;font-size:12px;font-weight:800;margin:0 0 9px}
+.progress-head span:last-child{color:#55708c}
+.progress{height:9px;background:#e4edf4;border-radius:10px;overflow:hidden;border:1px solid #d5e3ed}
+.progress>span{display:block;height:100%;width:0;background:linear-gradient(90deg,#e84055,#ffbf54)}
+.reward{display:flex;align-items:center;gap:9px;margin-top:17px;padding:12px;border:1px solid #dce8f2;background:#f0f6fb;border-radius:9px}
+.reward-icon{font-size:22px}
+.reward strong{display:block;font-size:12px}.reward small{font-size:11px;color:#6b8094}
+.footer{margin-top:17px;padding-top:15px;border-top:1px solid #e4ebf1;display:flex;justify-content:space-between;align-items:center;gap:8px}
+.status{color:#855c13;font-size:11px;font-weight:900;background:#fff1cf;border-radius:6px;padding:8px 10px}
+.pill{color:#56708a;font-size:11px;font-weight:800}
+.note{text-align:center;margin:26px auto 0;color:#e9f5ff;text-shadow:0 1px 6px #092746;font-size:12px;line-height:1.6;max-width:760px}
+@media(max-width:950px){.mission-list{grid-template-columns:repeat(2,minmax(0,1fr))}.topbar{margin-bottom:30px}}
+@media(max-width:620px){.shell{width:min(100% - 24px,450px);padding-top:15px}.topbar{margin-bottom:28px}.brand{font-size:11px}.back{padding:9px 11px;font-size:11px}.hero{margin-bottom:22px}.hero p{font-size:13px}.mission-list{grid-template-columns:1fr;gap:15px}.art{height:220px}.desc{min-height:0}.body{padding:20px}.note{color:#123b62;text-shadow:none}}
+@media(prefers-reduced-motion:reduce){*{scroll-behavior:auto!important;transition:none!important}}
+</style>
+</head>
+<body>
+<div class="shell">
+<header class="topbar"><a class="brand" href="./index.html" aria-label="Voltar ao Pokémon Arena"><span class="ball" aria-hidden="true"></span> POKÉMON ARENA</a><a class="back" href="./index.html">← VOLTAR À ARENA</a></header>
+<main>
+<section class="hero" aria-labelledby="title"><div class="eyebrow">Desafios de treinador</div><h1 id="title">Missões Pokémon</h1><p>Vença três batalhas consecutivas para desbloquear novos Pokémon e fortalecer sua equipe.</p></section>
+<section class="mission-list" aria-label="Três missões de desbloqueio">
+<article class="card fire"><div class="art"><span class="tag">MISSÃO BLOQUEADA</span><img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/5.png" alt="Charmeleon usando fogo em uma floresta" loading="eager"><span class="art-label">CHARMELEON</span></div><div class="body"><span class="number">MISSÃO 01 / 03</span><h2>Crescendo através do Calor</h2><p class="desc">Charmeleon treina o Lança-Chamas em uma floresta. Prove sua determinação em uma sequência de vitórias para desbloqueá-lo.</p><div class="condition"><div class="condition-icon" aria-hidden="true">⚔</div><div><strong>3 vitórias consecutivas</strong><span>Sem perder entre as batalhas</span></div></div><div class="progress-head"><span>Progresso</span><span>0 / 3</span></div><div class="progress" role="progressbar" aria-label="Progresso da missão Charmeleon" aria-valuenow="0" aria-valuemin="0" aria-valuemax="3"><span></span></div><div class="reward"><span class="reward-icon" aria-hidden="true">◈</span><div><small>RECOMPENSA</small><strong>Desbloquear Charmeleon</strong></div></div><div class="footer"><span class="status">🔒 BLOQUEADA</span><span class="pill">1 POKÉMON</span></div></div></article>
+<article class="card water"><div class="art"><span class="tag">MISSÃO BLOQUEADA</span><img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/8.png" alt="Wartortle" loading="eager"><span class="art-label">WARTORTLE</span></div><div class="body"><span class="number">MISSÃO 02 / 03</span><h2>Evolução Constante</h2><p class="desc">Wartortle aprimora seus movimentos nas águas de um rio. Mostre consistência em batalha para conquistar sua evolução.</p><div class="condition"><div class="condition-icon" aria-hidden="true">⚔</div><div><strong>3 vitórias consecutivas</strong><span>Sem perder entre as batalhas</span></div></div><div class="progress-head"><span>Progresso</span><span>0 / 3</span></div><div class="progress" role="progressbar" aria-label="Progresso da missão Wartortle" aria-valuenow="0" aria-valuemin="0" aria-valuemax="3"><span></span></div><div class="reward"><span class="reward-icon" aria-hidden="true">◈</span><div><small>RECOMPENSA</small><strong>Desbloquear Wartortle</strong></div></div><div class="footer"><span class="status">🔒 BLOQUEADA</span><span class="pill">1 POKÉMON</span></div></div></article>
+<article class="card sun"><div class="art"><span class="tag">MISSÃO BLOQUEADA</span><img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/2.png" alt="Ivysaur" loading="eager"><span class="art-label">IVYSAUR</span></div><div class="body"><span class="number">MISSÃO 03 / 03</span><h2>Força que vem do Sol</h2><p class="desc">Ivysaur absorve a luz do sol entre flores e campos verdes. Supere três confrontos seguidos para adicioná-lo à sua equipe.</p><div class="condition"><div class="condition-icon" aria-hidden="true">⚔</div><div><strong>3 vitórias consecutivas</strong><span>Sem perder entre as batalhas</span></div></div><div class="progress-head"><span>Progresso</span><span>0 / 3</span></div><div class="progress" role="progressbar" aria-label="Progresso da missão Ivysaur" aria-valuenow="0" aria-valuemin="0" aria-valuemax="3"><span></span></div><div class="reward"><span class="reward-icon" aria-hidden="true">◈</span><div><small>RECOMPENSA</small><strong>Desbloquear Ivysaur</strong></div></div><div class="footer"><span class="status">🔒 BLOQUEADA</span><span class="pill">1 POKÉMON</span></div></div></article>
+</section>
+<p class="note">O progresso das missões será sincronizado com as vitórias consecutivas quando o sistema de conquistas estiver conectado ao motor de batalha. Nenhuma recompensa é concedida nesta versão visual.</p>
+</main></div>
+</body></html>
