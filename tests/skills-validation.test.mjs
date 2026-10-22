@@ -25,7 +25,7 @@ function getMove(pokemonIndex, name) {
 test('JavaScript blocks parse', () => {
   const scripts = [...html.matchAll(/<script(?:\s[^>]*)?>([\s\S]*?)<\/script>/gi)];
   assert.ok(scripts.length > 0);
-  for(const [, , script] of scripts) new Function(script);
+  for(const [, script] of scripts) new Function(script);
 });
 test('10 original Pokemon and three evolutions have four described skills', () => {
   assert.equal(M.length, 13);
