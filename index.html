@@ -206,6 +206,7 @@ function resolveTurn(){
  state.logs.push('— Turno '+state.turn+' —');
  for(const p of [...state.team,...state.foes])p.dodge=false;
  const perform=(actor,enemySide,m,target)=>{
+  if(actor.sleepTurn===state.turn||actor.stunTurn===state.turn){attack(actor,null,m);return}
   if(m[0]==='Pó do Sono'){
    // Efeito em área: cada adversário vivo recebe dano e sono para o turno seguinte.
    for(const foe of enemySide.filter(x=>x.hp>0))attack(actor,foe,m);
