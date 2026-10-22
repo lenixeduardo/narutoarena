@@ -18,12 +18,12 @@
  const selected=state.picked.includes(i),full=state.picked.length>=3;
  const entries=moves(i).map((m,j)=>{
   const support=m[1]===0;
-  const image=m[0]==='Esquiva'?A.esquiva:imgMove(m[0]);
+  const image=m[0]==='Esquiva'?A.esquiva:imgMove(m[0],i);
   return `<li class="home-ability"><img src="${image}" alt="" loading="lazy"><div class="home-ability-copy"><div class="home-ability-top"><strong>${escapeAttr(m[0])}</strong><span>${support?'EFEITO':m[1]+' PODER'}</span></div><p>${escapeAttr(m[0]==='Esquiva'?m[3].replace(/\s*Custo:\s*1 energia\.?$/i,''):m[3])}</p><small>Custo: ${escapeAttr(labelCost(m,{charged:false}))}</small></div></li>`;
  }).join('');
  return `<aside class="home-details home-details--hero" id="home-details" aria-label="Habilidades de ${escapeAttr(N[i])}">
   <header class="home-details-head"><img class="home-details-portrait" src="${portrait(i)}" alt="${escapeAttr(N[i])}"><div class="home-details-title"><span class="home-details-eyebrow">FICHA DO POKÉMON · 4 HABILIDADES</span><h2>${escapeAttr(N[i])}</h2><span class="home-type">${escapeAttr(T[i])}</span></div><button class="home-details-close" type="button" onclick="homeCloseDetails()" aria-label="Fechar ficha de ${escapeAttr(N[i])}">×</button></header>
-  <ul class="home-abilities">${entries}</ul>
+  <ul class="home-abilities">${entries}</ul>${hasInnateDodge(i)?'<p class="home-dodge-hint">Esquiva também está disponível como ação defensiva universal durante a batalha (invulnerabilidade por 1 turno).</p>':''}
   <div class="home-details-footer"><span>${selected?'Este Pokémon já está no seu time.':full?'Time completo: remova um Pokémon para adicionar outro.':'Confira os golpes antes de escolher seu time.'}</span><button type="button" class="home-details-action" onclick="homeAddSelected()" ${full&&!selected?'disabled':''}>${selected?'REMOVER DO TIME':full?'TIME COMPLETO':'＋ ADICIONAR AO TIME'}</button></div>
  </aside>`;
 }
