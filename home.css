@@ -220,3 +220,35 @@ body.home-mode .app{padding-bottom:0!important}
  .home-details--hero .home-details-footer{padding:0 6px 7px}
  .home-details--hero .home-details-action{padding:7px;font-size:10px}
 }
+
+/* v1.3 — bloqueio explícito de espécies fora do elenco inicial */
+.home-poke.locked,.home-poke.locked:disabled{
+ display:block;position:relative;opacity:1;cursor:not-allowed;pointer-events:none;
+ background:#5a6a7a;border-color:#526479;box-shadow:inset 0 0 0 1px #f4f7fa20;
+}
+.home-poke.locked img,.home-poke.locked:hover img{
+ filter:grayscale(1) brightness(.62) contrast(.9);opacity:.8;transform:none;
+}
+.home-poke.locked:after{
+ content:'';position:absolute;inset:0;
+ background:linear-gradient(180deg,#142c425e 0%,#14283d3a 40%,#071d32d6 100%);
+ pointer-events:none;z-index:1;
+}
+.home-poke.locked .home-locked-label{
+ z-index:2;bottom:5px;left:6px;right:5px;color:#f7fbff;
+ text-shadow:0 1px 3px #000;font-size:11px;line-height:1.2;
+}
+.home-poke.locked .home-locked-label small{
+ display:block;color:#f1c5c5;font-size:8px;letter-spacing:.8px;
+ margin-top:2px;font-weight:900;
+}
+.home-poke.locked .home-lock-symbol{
+ position:absolute;top:5px;right:5px;z-index:3;display:grid;place-items:center;
+ width:24px;height:24px;border-radius:6px;border:1px solid #ffffff6a;
+ background:#132d48d9;color:#fff;
+}
+@media(max-width:680px){
+ .home-poke.locked .home-locked-label{font-size:10px;left:4px;bottom:3px}
+ .home-poke.locked .home-locked-label small{font-size:7px}
+ .home-poke.locked .home-lock-symbol{width:21px;height:21px;top:3px;right:3px}
+}
