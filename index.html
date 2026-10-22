@@ -333,4 +333,4 @@ document.addEventListener('pointermove',ev=>{const d=dragState;if(!d||d.kind!=='
 document.addEventListener('pointerup',ev=>{const d=dragState;if(!d||d.kind!=='pointer'||d.id!==ev.pointerId)return;if(d.moved){suppressClickUntil=Date.now()+500;const slot=d.slot;d.ghost?.remove();endDrag();if(slot!==null)assignToSlot(d.i,slot)}else endDrag();}, {passive:true});
 document.addEventListener('pointercancel',()=>{dragState?.ghost?.remove();endDrag()}, {passive:true});
 // A home inicial é renderizada exclusivamente pelo home.js, evitando exibir o layout mobile primeiro.
-</script><script src="home.js?v=20261022-balance-v2" onerror="document.querySelector('.home-boot-text').textContent='Falha ao carregar a arena. Atualize a página.'"></script></body></html>
+</script><script src="home.js?v=20261022-damage-5" onerror="document.querySelector('.home-boot-text').textContent='Falha ao carregar a arena. Atualize a página.'"></script></body></html>
