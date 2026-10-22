@@ -85,7 +85,7 @@ test('shield and sleep are applied by combat engine', () => {
 test('Pó do Sono targets every enemy and cannot bypass sleep or stun', () => {
   const source = section('const perform=', 'for(const q of state.queue.filter(');
   assert.match(source,/enemySide\.filter\(x=>x\.hp>0\)/);
-  assert.match(source,/actor\.sleepTurn===state\.turn\|\|actor\.stunTurn===state\.turn/);
+  assert.match(source,/actionBlocked\(actor,m\)/);
 });
 test('moves never use another species generic battle illustration', () => {
   assert.match(html,/const VERIFIED_MOVE_IMAGES/);
