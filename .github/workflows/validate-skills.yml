@@ -4,11 +4,19 @@ on:
     paths:
       - 'index.html'
       - 'tests/skills-validation.test.mjs'
+      - 'tests/battle-balance.test.mjs'
+      - 'progression.js'
+      - 'home.js'
+      - 'missions.html'
       - '.github/workflows/validate-skills.yml'
   pull_request:
     paths:
       - 'index.html'
       - 'tests/skills-validation.test.mjs'
+      - 'tests/battle-balance.test.mjs'
+      - 'progression.js'
+      - 'home.js'
+      - 'missions.html'
       - '.github/workflows/validate-skills.yml'
 jobs:
   validate:
@@ -21,4 +29,4 @@ jobs:
         with:
           node-version: '22'
       - name: Validate skill data and effects
-        run: node --test tests/skills-validation.test.mjs
+        run: node --test tests/*.test.mjs
