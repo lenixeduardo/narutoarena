@@ -101,20 +101,20 @@ const KEY=n=>n.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'').rep
 const card=i=>A[KEY(N[i])+'_card']||'assets/mission-'+KEY(N[i])+'-portrait.jpg';const portrait=i=>A[KEY(N[i])+'_card_portrait']||'assets/mission-'+KEY(N[i])+'-portrait.jpg';
 // Cada golpe: [nome, dano, energia (F/E/T/V/A), descrição]. A = coringa preta.
 const M=[
-[['Investida',25,'F','Charmander investe contra um inimigo e causa 25 de dano físico.'],['Lança-Chamas',24,'E','Charmander lança fogo contra um inimigo: 24 de dano e queimadura de 5 por turno durante 2 turnos.'],['Garra de Fogo',31,'FF','Charmander atinge um inimigo com as garras flamejantes, causando 31 de dano físico.'],['Brasa',17,'E','Charmander dispara brasas contra um inimigo: 17 de dano e queimadura de 5 por turno durante 2 turnos.']],
-[['Investida',25,'F','Squirtle investe contra um inimigo e causa 25 de dano físico.'],['Jato d’Água',23,'E','Squirtle lança um jato de água contra um inimigo e causa 23 de dano especial.'],['Hidro Bomba',35,'EE','Squirtle lança uma poderosa coluna de água contra um inimigo e causa 35 de dano especial.'],['Casco Duro',0,'T','Squirtle recebe 25 de escudo (máximo 50) e remove queimadura, veneno, sono, atordoamento, fraqueza e sobrecarga.']],
+[['Investida',25,'F','Charmander investe contra um inimigo e causa 25 de dano físico.'],['Lança-Chamas',25,'E','Charmander lança fogo contra um inimigo: 25 de dano e queimadura de 5 por turno durante 2 turnos.'],['Garra de Fogo',30,'FF','Charmander atinge um inimigo com as garras flamejantes, causando 30 de dano físico.'],['Brasa',15,'E','Charmander dispara brasas contra um inimigo: 15 de dano e queimadura de 5 por turno durante 2 turnos.']],
+[['Investida',25,'F','Squirtle investe contra um inimigo e causa 25 de dano físico.'],['Jato d’Água',25,'E','Squirtle lança um jato de água contra um inimigo e causa 25 de dano especial.'],['Hidro Bomba',35,'EE','Squirtle lança uma poderosa coluna de água contra um inimigo e causa 35 de dano especial.'],['Casco Duro',0,'T','Squirtle recebe 25 de escudo (máximo 50) e remove queimadura, veneno, sono, atordoamento, fraqueza e sobrecarga.']],
 [['Investida',25,'F','Bulbasaur investe contra um inimigo e causa 25 de dano físico.'],['Chicote de Vinha',35,'FA','Bulbasaur atinge um inimigo com suas vinhas, causando 35 de dano. Custo: uma Física e uma Coringa preta (qualquer energia).'],['Raio Solar',60,'TT','Bulbasaur dispara energia solar contra um inimigo, causando 60 de dano. Custo: duas energias Técnicas.'],['Pó do Sono',15,'T','Bulbasaur espalha pó sonífero em todos os inimigos, causando 15 de dano a cada um. Após 1 turno, todos os atingidos dormem por 1 turno e perdem a ação.']],
-[['Investida',18,'F','Caterpie investe contra um inimigo e causa 18 de dano físico.'],['Disparo de Seda',0,'T','Caterpie prende um inimigo com seda e reduz em 50% o dano do próximo ataque realizado por esse inimigo.'],['Cabeçada',26,'FF','Caterpie atinge um inimigo com a cabeça e causa 26 de dano físico.']],
-[['Picada Venenosa',18,'F','Weedle perfura um inimigo com o ferrão: 18 de dano e envenenamento de 5 por turno durante 2 turnos.'],['Disparo de Seda',0,'T','Weedle prende um inimigo com seda e reduz em 50% o dano do próximo ataque realizado por esse inimigo.'],['Investida',20,'F','Weedle investe contra um inimigo e causa 20 de dano físico.']],
-[['Rajada de Vento',22,'E','Pidgey cria uma rajada de vento que causa 22 de dano especial a um inimigo.'],['Ataque Rápido',17,'F','Pidgey investe velozmente contra um inimigo e causa 17 de dano físico.'],['Ataque de Asa',29,'FE','Pidgey atinge um inimigo com a asa, causando 29 de dano. Custo: Física + Especial.']],
-[['Ataque Rápido',18,'F','Rattata investe velozmente contra um inimigo e causa 18 de dano físico.'],['Hiper Presa',33,'FF','Rattata desfere uma mordida poderosa em um inimigo e causa 33 de dano físico.'],['Mordida',23,'F','Rattata morde um inimigo e causa 23 de dano físico.']],
-[['Bicada',22,'F','Spearow bica um inimigo e causa 22 de dano físico.'],['Ataque de Fúria',30,'FF','Spearow desfere bicadas consecutivas contra um inimigo e causa 30 de dano físico no total.'],['Ataque Rápido',17,'F','Spearow atinge rapidamente um inimigo e causa 17 de dano físico.']],
-[['Mordida',18,'F','Ekans morde um inimigo, causa 18 de dano e rouba 1 energia disponível do adversário para seu time.'],['Ácido',25,'E','Ekans cospe ácido contra um inimigo: 25 de dano especial e veneno de 5 por turno durante 2 turnos.'],['Enrolar',0,'T','Ekans se enrola em um inimigo e reduz em 50% o dano do próximo ataque realizado pelo alvo.']],
-[['Choque do Trovão',18,'E','Pikachu causa 18 de dano e sobrecarrega o alvo: sua próxima habilidade custa uma energia coringa adicional.'],['Raio',35,'EE','Pikachu atinge um inimigo com um raio: 35 de dano e 30% de chance de atordoar por 1 turno seguinte.'],['Ataque Rápido',18,'F','Pikachu investe velozmente contra um inimigo e causa 18 de dano físico.']]
+[['Investida',20,'F','Caterpie investe contra um inimigo e causa 20 de dano físico.'],['Disparo de Seda',0,'T','Caterpie prende um inimigo com seda e reduz em 50% o dano do próximo ataque realizado por esse inimigo.'],['Cabeçada',25,'FF','Caterpie atinge um inimigo com a cabeça e causa 25 de dano físico.']],
+[['Picada Venenosa',20,'F','Weedle perfura um inimigo com o ferrão: 20 de dano e envenenamento de 5 por turno durante 2 turnos.'],['Disparo de Seda',0,'T','Weedle prende um inimigo com seda e reduz em 50% o dano do próximo ataque realizado por esse inimigo.'],['Investida',20,'F','Weedle investe contra um inimigo e causa 20 de dano físico.']],
+[['Rajada de Vento',20,'E','Pidgey cria uma rajada de vento que causa 20 de dano especial a um inimigo.'],['Ataque Rápido',15,'F','Pidgey investe velozmente contra um inimigo e causa 15 de dano físico.'],['Ataque de Asa',30,'FE','Pidgey atinge um inimigo com a asa, causando 30 de dano. Custo: Física + Especial.']],
+[['Ataque Rápido',20,'F','Rattata investe velozmente contra um inimigo e causa 20 de dano físico.'],['Hiper Presa',35,'FF','Rattata desfere uma mordida poderosa em um inimigo e causa 35 de dano físico.'],['Mordida',25,'F','Rattata morde um inimigo e causa 25 de dano físico.']],
+[['Bicada',20,'F','Spearow bica um inimigo e causa 20 de dano físico.'],['Ataque de Fúria',30,'FF','Spearow desfere bicadas consecutivas contra um inimigo e causa 30 de dano físico no total.'],['Ataque Rápido',15,'F','Spearow atinge rapidamente um inimigo e causa 15 de dano físico.']],
+[['Mordida',20,'F','Ekans morde um inimigo, causa 20 de dano e remove 1 energia disponível do adversário, sem transferi-la para sua equipe.'],['Ácido',25,'E','Ekans cospe ácido contra um inimigo: 25 de dano especial e veneno de 5 por turno durante 2 turnos.'],['Enrolar',0,'T','Ekans se enrola em um inimigo e reduz em 50% o dano do próximo ataque realizado pelo alvo.']],
+[['Choque do Trovão',20,'E','Pikachu causa 20 de dano e sobrecarrega o alvo: sua próxima habilidade custa uma energia coringa adicional.'],['Raio',35,'EE','Pikachu atinge um inimigo com um raio: 35 de dano e 30% de chance de atordoar por 1 turno seguinte.'],['Ataque Rápido',20,'F','Pikachu investe velozmente contra um inimigo e causa 20 de dano físico.']]
 ];
 M.push(
-[['Investida',25,'F','Charmeleon investe contra um inimigo e causa 25 de dano físico.'],['Lança-Chamas',29,'E','Charmeleon lança fogo em um inimigo: 29 de dano e queimadura de 5 por turno durante 2 turnos.'],['Garra de Fogo',35,'FF','Charmeleon atinge um inimigo com suas garras flamejantes e causa 35 de dano físico.'],['Brasa',20,'E','Charmeleon dispara brasas em um inimigo: 20 de dano e queimadura de 5 por turno durante 2 turnos.']],
-[['Investida',25,'F','Wartortle investe contra um inimigo e causa 25 de dano físico.'],['Jato d’Água',28,'E','Wartortle dispara água concentrada em um inimigo e causa 28 de dano especial.'],['Hidro Bomba',40,'EE','Wartortle lança uma coluna de água em um inimigo e causa 40 de dano especial.'],['Casco Duro',0,'T','Wartortle recebe 25 de escudo (máximo 50) e remove queimadura, veneno, sono, atordoamento, fraqueza e sobrecarga.']],
+[['Investida',25,'F','Charmeleon investe contra um inimigo e causa 25 de dano físico.'],['Lança-Chamas',30,'E','Charmeleon lança fogo em um inimigo: 30 de dano e queimadura de 5 por turno durante 2 turnos.'],['Garra de Fogo',35,'FF','Charmeleon atinge um inimigo com suas garras flamejantes e causa 35 de dano físico.'],['Brasa',20,'E','Charmeleon dispara brasas em um inimigo: 20 de dano e queimadura de 5 por turno durante 2 turnos.']],
+[['Investida',25,'F','Wartortle investe contra um inimigo e causa 25 de dano físico.'],['Jato d’Água',30,'E','Wartortle dispara água concentrada em um inimigo e causa 30 de dano especial.'],['Hidro Bomba',40,'EE','Wartortle lança uma coluna de água em um inimigo e causa 40 de dano especial.'],['Casco Duro',0,'T','Wartortle recebe 25 de escudo (máximo 50) e remove queimadura, veneno, sono, atordoamento, fraqueza e sobrecarga.']],
 [['Investida',25,'F','Ivysaur investe contra um inimigo e causa 25 de dano físico.'],['Chicote de Vinha',35,'FA','Ivysaur atinge um inimigo com suas vinhas: 35 de dano; custa uma Física e uma Coringa preta.'],['Raio Solar',65,'TT','Ivysaur dispara energia solar em um inimigo: 65 de dano; custa duas energias Técnicas.'],['Pó do Sono',15,'T','Ivysaur espalha pó sonífero: todos os inimigos vivos recebem 15 de dano e perdem sua ação no turno seguinte.']]
 );
 // Cenas verificadas: o próprio Pokémon aparece executando a habilidade.
@@ -221,7 +221,7 @@ function attack(a,b,m){
  a.costTax=0;
  if(b.dodge){state.logs.push(N[b.i]+' está invulnerável e bloqueou '+name+'!');return true}
  let damage=m[1],reduced=false;
- if(damage>0&&a.weaken){damage=Math.ceil(damage/2);a.weaken=false;reduced=true}
+ if(damage>0&&a.weaken){damage=Math.max(5,Math.round(damage/10)*5);a.weaken=false;reduced=true}
  const absorbed=Math.min(b.shield||0,damage);
  b.shield=(b.shield||0)-absorbed;
  const actual=damage-absorbed;
@@ -239,10 +239,9 @@ function attack(a,b,m){
  }
  if(name==='Mordida'&&a.i===8){
   const source=state.team.includes(b)?state.energy:state.enemyEnergy;
-  const destination=state.team.includes(a)?state.energy:state.enemyEnergy;
-  const stolen=Object.keys(source).find(k=>source[k]>0);
-  if(stolen){source[stolen]--;destination[stolen]++;state.logs.push(N[a.i]+' roubou 1 energia '+ENERGY_NAMES[stolen]+'!')}
-  else state.logs.push(N[a.i]+' não encontrou energia disponível para roubar.');
+  const removed=Object.keys(source).find(k=>source[k]>0);
+  if(removed){source[removed]--;state.logs.push(N[a.i]+' removeu 1 energia '+ENERGY_NAMES[removed]+' do adversário!')}
+  else state.logs.push(N[a.i]+' não encontrou energia disponível para remover.');
  }
  return true;
 }
