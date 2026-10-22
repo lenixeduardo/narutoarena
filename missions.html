@@ -144,7 +144,7 @@ function updateProgress(){
   button.classList.toggle('ready',ready);
   button.classList.toggle('unlocked',claimed);
   article.classList.toggle('completed',claimed);
-  button.innerHTML=claimed?'DESBLOQUEADO':ready?'RESGATAR':\'<svg aria-hidden="true"><use href="#icon-lock"/></svg>BLOQUEADO\';
+  button.innerHTML=claimed?'DESBLOQUEADO':ready?'RESGATAR':'<svg aria-hidden="true"><use href="#icon-lock"/></svg>BLOQUEADO';
   button.setAttribute('aria-label',claimed?name+' desbloqueado':ready?'Resgatar '+name:name+' bloqueado. Ganhe 3 vitórias consecutivas');
  });
  note.textContent=p.streak>=3?'Missão concluída! Resgate um Pokémon. Cada resgate consome a sequência de 3 vitórias.':'Sequência atual: '+p.streak+'/3 vitórias. Cada resgate exige uma nova sequência de 3 vitórias.';
