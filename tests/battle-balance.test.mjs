@@ -108,3 +108,35 @@ test('Vitórias consecutivas desbloqueiam uma evolução por resgate',()=>{
  assert.equal(api.read().streak,0);assert.equal(api.canClaim('Wartortle'),false);
  assert.equal(progressFactory({localStorage}).isUnlocked('Charmeleon'),true);
 });
+
+test('Sobrecarga impede IA de agir com orçamento insuficiente na mesma rodada',()=>{
+ const h=setup(),s=h.state;s.team=[h.unit(9)];s.foes=[h.unit(9)];
+ s.enemyEnergy={F:1,E:0,T:0,V:0};
+ s.queue=[{ally:0,m:move(9,'Choque do Trovão'),target:0,spent:['E']}];
+ h.resolveTurn();
+ assert.equal(s.team[0].hp,100);
+ assert.ok(s.logs.some(x=>x.includes('energia insuficiente')));
+ assert.equal(s.foes[0].costTax,1);
+});
+test('Três batalhas completas alimentam missão e derrota reinicia sequência',()=>{
+ const {api}=progressStore();
+ for(let battle=0;battle<3;battle++){
+  const h=setup(api),s=h.state;
+  s.team=[h.unit(0),h.unit(1),h.unit(2)];
+  s.foes=[h.unit(4),h.unit(5),h.unit(6)];
+  for(const e of s.foes)e.hp=15;
+  s.queue=[0,1,2].map(i=>({ally:i,m:move(i,'Investida'),target:i,spent:['F']}));
+  h.resolveTurn();
+  assert.equal(s.finished,true);
+  assert.equal(s.result,'win');
+  assert.equal(api.read().streak,battle+1);
+ }
+ assert.equal(api.canClaim('Wartortle'),true);
+ const h=setup(api),s=h.state;
+ s.team=[h.unit(0)];s.team[0].hp=5;s.foes=[h.unit(9)];
+ s.enemyEnergy={F:1,E:0,T:0,V:0};
+ h.resolveTurn();
+ assert.equal(s.result,'lose');
+ assert.equal(api.read().streak,0);
+ assert.equal(api.canClaim('Wartortle'),false);
+});
