@@ -2,7 +2,7 @@
 
 Jogo de estratégia por turnos com equipes de **3 Pokémon contra 3 Pokémon**, inspirado nas mecânicas de combate tático do Soul Arena. O projeto é uma experiência independente de fã, com interface em português e foco em decisões de equipe, administração de energia e efeitos de status.
 
-> **Status:** protótipo em desenvolvimento (Alpha). Algumas mecânicas descritas abaixo fazem parte do planejamento de balanceamento e ainda precisam ser validadas no motor de batalha.
+> **Status:** protótipo em desenvolvimento (Alpha). O motor de batalha possui testes automatizados de custos, IA, status e missões. Modos online, persistência por conta e testes visuais de navegador ainda não estão concluídos.
 
 ## Visão geral
 
@@ -20,13 +20,19 @@ Cada Pokémon possui quatro habilidades. As habilidades podem causar dano, conce
 
 | Recurso | Significado |
 | --- | --- |
-| Energia física | Recurso para habilidades físicas |
-| Energia técnica | Recurso para habilidades técnicas |
-| Custo aleatório (preto) | Pode ser pago com qualquer uma das energias disponíveis; não é uma terceira reserva |
+| Energia física (F) | Recurso para habilidades físicas |
+| Energia especial (E) | Recurso para habilidades especiais |
+| Energia técnica (T) | Recurso para habilidades técnicas |
+| Energia vital (V) | Recurso adicional para custos coringa |
+| Custo coringa (A, preto) | Pode ser pago com qualquer energia disponível; não constitui uma reserva separada |
 
-**Efeitos previstos para o motor de combate:** atordoamento, sono, roubo de energia, aumento de custo, invulnerabilidade, defesa destrutível/indestrutível, dano contínuo, queimadura, envenenamento e Molhado. A ordem de resolução deve validar impedimentos e custos, aplicar defesas antes do dano à vida e atualizar os efeitos no fim do turno.
+**Efeitos implementados:** sono e atordoamento (perda de ação), veneno e queimadura (-5 HP por turno), enfraquecimento (próximo dano reduzido à metade), escudo absorvível, Esquiva universal (invulnerabilidade durante a rodada inteira), roubo de energia (Mordida de Ekans), Sobrecarga (+1 energia coringa na próxima ação, aplicada por Choque do Trovão de Pikachu) e remoção de efeitos negativos por Casco Duro.
 
-### Balanceamento dos iniciais (especificação)
+A IA recebe um orçamento independente de três energias por rodada, utiliza o mesmo cálculo de custos do jogador, respeita sono, atordoamento e Sobrecarga, e pode optar por defesa. Ataques em área respeitam invulnerabilidade. Casco Duro acumula no máximo 50 pontos de escudo.
+
+**Ainda não implementados:** condição Molhado, escudo indestrutível e regras avançadas de prioridade/recarga. Esses efeitos não devem ser anunciados como funcionais na interface.
+
+### Balanceamento dos iniciais (valores implementados)
 
 | Pokémon | Habilidade | Dano | Custo / efeito |
 | --- | --- | --- | --- |
@@ -35,12 +41,16 @@ Cada Pokémon possui quatro habilidades. As habilidades podem causar dano, conce
 | Bulbasaur | Pó de Sono | 15 em todos os inimigos | Aplica sono após um turno, durante um turno |
 | Bulbasaur | Chicote de Vinha | 35 | 1 física + 1 aleatória |
 | Squirtle | Investida | 25 | Ataque físico |
-| Squirtle | Casco Duro | — | Concede 25 de defesa indestrutível, absorvida antes da vida |
-| Squirtle | Jato de Água | 20 | Aplica Molhado |
-| Squirtle | Hidro Bomba | 40 | Ataque técnico |
+| Squirtle | Casco Duro | — | 25 de escudo absorvível, máximo 50; remove status negativos |
+| Squirtle | Jato d’Água | 23 | 1 energia especial |
+| Squirtle | Hidro Bomba | 35 | 2 energias especiais |
 | Charmander | Investida | 25 | Ataque físico |
 
-Enquanto Molhado estiver ativo, habilidades ofensivas do Squirtle causam **+5 de dano**. Custos ainda não aprovados e outras habilidades de Charmander devem ser confirmados antes de se tornarem regras definitivas.
+Charmander utiliza Lança-Chamas (24 de dano, 1 energia especial) e pode aplicar queimadura. A habilidade Investida dos três iniciais causa 25 de dano.
+
+**Evoluções desbloqueáveis:** Charmeleon (Lança-Chamas 29), Wartortle (Hidro Bomba 40) e Ivysaur (Raio Solar 65). Os golpes ofensivos equivalentes recebem um ganho de aproximadamente 5 pontos de dano sem reduzir o custo de energia.
+
+**Esquiva:** Pokémon com três golpes próprios possuem Esquiva como quarta habilidade. Pokémon com quatro golpes próprios têm a mesma ação defensiva disponível separadamente durante a batalha, preservando os quatro golpes exibidos.
 
 ## Estrutura do projeto
 
@@ -49,7 +59,10 @@ Enquanto Molhado estiver ativo, habilidades ofensivas do Squirtle causam **+5 de
 ├── index.html       # Entrada do jogo e interface de batalha
 ├── home.css         # Estilos da tela inicial
 ├── home.js          # Seleção de Pokémon e detalhes de habilidades
-├── missions.html    # Página de missões
+├── missions.html    # Página de missões e resgate
+├── progression.js   # Vitórias, derrotas e desbloqueios locais
+├── tests/           # Testes automatizados com Node.js
+├── .github/workflows/validate-skills.yml # CI de habilidades
 ├── assets/          # Recursos visuais
 └── README.md
 ```
@@ -65,13 +78,26 @@ O protótipo utiliza HTML, CSS e JavaScript e não exige backend para abrir a in
 
 Para testar em dispositivos móveis, publique em um endereço HTTPS. A execução direta pelo visualizador de arquivos do celular pode restringir recursos do navegador.
 
+## Testes automatizados
+
+Com Node.js 22 ou superior:
+
+```bash
+node --test tests/*.test.mjs
+```
+
+A suíte cobre regras dos iniciais, ganhos das evoluções, custos coringa, Sobrecarga, roubo de energia, invulnerabilidade, escudos, efeitos em área, IA com orçamento próprio e a sequência de três vitórias para resgatar Pokémon. O workflow `Validate Pokemon Skills` executa esses testes em alterações relevantes.
+
+## Missões e desbloqueios
+
+Cada uma das três missões exige três vitórias consecutivas. O resgate desbloqueia um Pokémon e consome a sequência, exigindo novas três vitórias para o próximo. O progresso é salvo no `localStorage` do navegador e **não** sincroniza entre contas ou dispositivos.
+
 ## Próximas etapas
 
-- Integrar e testar o balanceamento dos Pokémon iniciais.
-- Centralizar o catálogo de efeitos e a resolução de turnos.
-- Validar custos, duração, recargas e imunidades.
-- Exibir energias e descrições completas nos tooltips.
-- Testar fluxos desktop/mobile e os modos de jogo.
+- Testar visualmente desktop/mobile e partidas completas em navegador real.
+- Sincronizar progresso e desbloqueios com contas de usuário.
+- Implementar modos online e a condição Molhado, se aprovada para o balanceamento.
+- Expandir cenários de IA e medir taxa de vitórias para ajustar personagens.
 
 ## Referências e créditos
 
