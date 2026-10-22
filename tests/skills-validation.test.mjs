@@ -63,7 +63,7 @@ test('Solar Beam requires two technical energies', () => {
 test('shield and sleep are applied by combat engine', () => {
   const N=['Charmander','Squirtle','Bulbasaur','Caterpie','Weedle','Pidgey','Rattata','Spearow','Ekans','Pikachu','Charmeleon','Wartortle','Ivysaur'];
   const combat = new Function(
-    'const N='+JSON.stringify(N)+';const state={turn:1,logs:[]};const rnd=()=>0;' +
+    'const N='+JSON.stringify(N)+';const state={turn:1,logs:[]};const rnd=()=>0;const actionBlocked=(u,m)=>(u.sleepTurn===state.turn||u.stunTurn===state.turn)&&m[0]!==\'Casco Duro\';' +
     'function unit(i){return {i,hp:100,dodge:false,burn:0,poison:0,sleepTurn:0,stunTurn:0,weaken:false,shield:0}};' +
     section('function attack(a,b,m)', 'function checkEnd()') +
     'return {attack,unit,state};'
