@@ -90,7 +90,7 @@ const M=[
 M.push([['Lança-Chamas',29,'E','Lança uma rajada de chamas que pode queimar o alvo.'],['Garra de Fogo',35,'FF','Ataca de perto com garras flamejantes.'],['Brasa',20,'F','Dispara brasas contra o adversário.']],[['Jato d’Água',28,'E','Lança um jato de água concentrado.'],['Hidro Bomba',40,'EE','Dispara uma poderosa coluna de água.'],['Bolhas',20,'F','Lança uma sequência de bolhas.']],[['Chicote de Vinha',26,'F','Atinge o alvo com cipós resistentes.'],['Raio Solar',46,'FREE','Absorve luz neste turno e dispara energia solar no próximo.'],['Pó do Sono',0,'T','Espalha pó que faz o alvo perder uma ação.']]);
 const MOVEIMG={'Lança-Chamas':'lanca_chamas','Garra de Fogo':'lanca_chamas','Brasa':'lanca_chamas','Jato d’Água':'jato_agua','Hidro Bomba':'jato_agua','Bolhas':'jato_agua','Chicote de Vinha':'chicote_vinha','Raio Solar':'raio_solar','Pó do Sono':'po_sono','Mordida':'mordida','Choque do Trovão':'choque_trovao','Raio':'choque_trovao','Ataque Rápido':'ataque_rapido'};
 const imgMove=n=>A[MOVEIMG[n]||'golpe_corpo'];
-const moves=i=>[...M[i],['Esquiva',0,'ANY','Evita o primeiro ataque recebido no turno. Custo: 1 energia']];
+const moves=i=>M[i].length===4?M[i]:[...M[i],['Esquiva',0,'A','Evita o primeiro ataque direcionado a este Pokémon durante o turno. Consome uma energia Coringa preta (qualquer tipo).']];
 const state={view:'team',filter:'Todos',picked:[],focus:0,team:[],foes:[],energy:{F:0,E:0,T:0,V:0},queue:[],turn:1,active:0,logs:[],finished:false,result:null,selectedMove:null,wins:PokemonArenaProgress.read().wins,losses:PokemonArenaProgress.read().losses};
 const $=id=>document.getElementById(id);
 document.documentElement.style.setProperty('--arena',`url("${A.arena_kanto}")`);
@@ -136,15 +136,73 @@ function skillHover(j){const u=activeUnit(),panel=document.getElementById('skill
 function skillHoverEnd(){const panel=document.getElementById('skill-hover-detail');if(panel)panel.hidden=true;}
 function showMove(j){const u=activeUnit();if(!u||u.hp<=0||state.queue.some(x=>x.ally===state.active))return;const m=moves(u.i)[j];if(!affordable(m,u))return;state.selectedMove={j};$('modal').innerHTML=`<div style="display:flex;justify-content:space-between;align-items:center"><h2>${m[0].toUpperCase()}</h2><button class="gear" onclick="closeModal()">×</button></div><img src="${m[0]==='Esquiva'?A.esquiva:imgMove(m[0])}" alt="${m[0]}"><p>${m[3]}</p><div class="stats"><div><small>PODER</small><strong>${m[1]}</strong></div><div><small>CUSTO</small><strong style="font-size:12px">${labelCost(m,u)}</strong></div></div><button class="big red" onclick="confirmMove()">USAR GOLPE</button><button class="big ghost" onclick="closeModal()">VOLTAR</button>`;$('overlay').classList.remove('hidden')}
 function closeModal(){$('overlay').classList.add('hidden')}
-function confirmMove(){const u=activeUnit(),m=moves(u.i)[state.selectedMove.j];closeModal();if(m[0]==='Esquiva'||m[0]==='Raio Solar'&&!u.charged){queueAction(null);return}state.logs.push('Escolha um adversário como alvo.');render()}
+function confirmMove(){const u=activeUnit(),m=moves(u.i)[state.selectedMove.j];closeModal();if(['Esquiva','Casco Duro','Pó do Sono'].includes(m[0])){queueAction(null);return}state.logs.push('Escolha um adversário como alvo.');render()}
 function queueAction(target){if(!state.selectedMove)return;const u=activeUnit(),m=moves(u.i)[state.selectedMove.j];if(!affordable(m,u))return;const spent=pay(m,u);state.queue.push({ally:state.active,m,target,spent});state.selectedMove=null;state.active=state.team.findIndex((x,i)=>x.hp>0&&!state.queue.some(q=>q.ally===i));if(state.active<0)state.active=firstAlive(state.team);render()}
 function removeAction(i){const q=state.queue.splice(i,1)[0];if(q)for(const k of q.spent)state.energy[k]++;render()}
 function battleView(){const u=activeUnit(),enemy=state.foes[firstAlive(state.foes)]||state.foes[0],friend=state.team[firstAlive(state.team)]||state.team[0];return `<section class="screen"><div class="arena-battle"><div class="turn">TURNO ${state.turn}</div><div class="ally-hud"><b>${N[friend.i]}</b><div class="health"><span style="width:${friend.hp}%"></span></div><small>HP ${friend.hp}/100</small></div><div class="enemy-hud"><b>${N[enemy.i]}</b><div class="health"><span style="width:${enemy.hp}%"></span></div><small>HP ${enemy.hp}/100</small></div><img class="battle-sprite sprite-ally" src="${portrait(friend.i)}" alt="Pokémon aliado"><img class="battle-sprite sprite-enemy" src="${portrait(enemy.i)}" alt="Pokémon rival"><div class="battle-command"><div class="battle-command-title">O que ${u?N[u.i]:'seu time'} vai fazer?</div><div class="skill-hover-detail" id="skill-hover-detail" role="status" aria-live="polite" hidden></div><div class="battle-actions">${u?moves(u.i).map((m,j)=>`<div class="skill-hover-wrap" onmouseenter="skillHover(${j})" onmouseleave="skillHoverEnd()" onfocusin="skillHover(${j})" onfocusout="skillHoverEnd()"><button ${!affordable(m,u)||state.queue.some(q=>q.ally===state.active)?'disabled':''} onclick="showMove(${j})" aria-label="${escapeHTML(m[0])}: ${escapeHTML(m[3])}. Custo: ${labelCost(m,u)}"><img src="${m[0]==='Esquiva'?A.esquiva:imgMove(m[0])}" alt=""><span>${m[0]}</span></button></div>`).join(''):''}</div></div></div><div class="card"><div class="card-title">SEU TIME · SELECIONE UM POKÉMON</div><div class="battle-select">${state.team.map((x,i)=>`<button class="${state.active===i?'active':''}" ${x.hp<=0?'disabled':''} onclick="selectAlly(${i})"><img src="${card(x.i)}" alt=""><span>${N[x.i]}</span><br>${x.hp} HP</button>`).join('')}</div></div><div class="card"><div class="card-title">RIVAIS · TOQUE PARA DEFINIR O ALVO</div><div class="battle-select">${state.foes.map((x,i)=>`<button ${x.hp<=0?'disabled':''} onclick="selectEnemy(${i})"><img src="${card(x.i)}" alt=""><span>${N[x.i]}</span><br>${x.hp} HP</button>`).join('')}</div></div><div class="card"><div class="card-title">ENERGIAS DISPONÍVEIS</div><div class="energy">${Object.entries(state.energy).map(([k,v])=>`<span>${({F:'Física',E:'Especial',T:'Técnica',V:'Vital'})[k]}: <b>${v}</b></span>`).join('')}</div></div><div class="card queue"><strong>FILA DE AÇÕES (${state.queue.length}/3)</strong>${state.queue.map((q,i)=>`<p>${N[state.team[q.ally].i]} → ${q.m[0]} <button onclick="removeAction(${i})">Remover</button></p>`).join('')}<button class="big" onclick="resolveTurn()">${state.queue.length?'CONFIRMAR TURNO':'PASSAR TURNO'}</button><button class="big ghost" onclick="clearQueue()">LIMPAR FILA</button></div><div class="card queue"><strong>HISTÓRICO</strong>${state.logs.slice(-7).reverse().map(x=>`<p>${escapeHTML(x)}</p>`).join('')}</div></section>`}
 function escapeHTML(s){return String(s).replaceAll('&','&amp;').replaceAll('<','&lt;')}
 function clearQueue(){while(state.queue.length){const q=state.queue.pop();for(const k of q.spent)state.energy[k]++}state.selectedMove=null;render()}
-function attack(a,b,m){if(a.hp<=0)return;if(a.sleep){a.sleep=0;state.logs.push(N[a.i]+' está dormindo.');return}if(m[0]==='Esquiva'){a.dodge=true;state.logs.push(N[a.i]+' preparou Esquiva.');return}if(m[0]==='Raio Solar'&&!a.charged){a.charged=true;a.chargeTurn=state.turn;state.logs.push(N[a.i]+' está absorvendo luz solar.');return}if(m[0]==='Raio Solar'){if(a.chargeTurn===state.turn)return;a.charged=false}if(!b||b.hp<=0)return;if(b.dodge){b.dodge=false;state.logs.push(N[b.i]+' desviou de '+m[0]+'!');return}let dmg=m[1];if(b.weaken){dmg=Math.ceil(dmg/2);b.weaken=false}b.hp=Math.max(0,b.hp-dmg);state.logs.push(N[a.i]+' usou '+m[0]+' em '+N[b.i]+(dmg?' (-'+dmg+' HP).':'.'));if(['Lança-Chamas','Brasa'].includes(m[0]))b.burn=2;if(m[0]==='Pó do Sono')b.sleep=1;if(['Disparo de Seda','Enrolar','Picada Venenosa'].includes(m[0]))b.weaken=true}
+function attack(a,b,m){
+ if(!a||a.hp<=0)return;
+ if(a.sleepTurn===state.turn){a.sleepTurn=0;state.logs.push(N[a.i]+' está dormindo e perdeu a ação.');return}
+ if(a.stunTurn===state.turn){a.stunTurn=0;state.logs.push(N[a.i]+' está atordoado e perdeu a ação.');return}
+ const name=m[0];
+ if(name==='Esquiva'){a.dodge=true;state.logs.push(N[a.i]+' preparou Esquiva.');return}
+ if(name==='Casco Duro'){a.shield+=25;state.logs.push(N[a.i]+' recebeu 25 pontos de defesa ('+a.shield+' restantes).');return}
+ if(!b||b.hp<=0)return;
+ if(b.dodge){b.dodge=false;state.logs.push(N[b.i]+' esquivou do golpe '+name+'!');return}
+ let damage=m[1],reduced=false;
+ if(damage>0&&a.weaken){damage=Math.ceil(damage/2);a.weaken=false;reduced=true}
+ const absorbed=Math.min(b.shield||0,damage);
+ b.shield=(b.shield||0)-absorbed;
+ const actual=damage-absorbed;
+ b.hp=Math.max(0,b.hp-actual);
+ state.logs.push(N[a.i]+' usou '+name+' em '+N[b.i]+' (-'+actual+' HP'+(absorbed?', '+absorbed+' absorvidos pela defesa':'')+(reduced?', dano reduzido por seda/enrolar':'')+').');
+ if(b.hp<=0)return;
+ if(['Lança-Chamas','Brasa'].includes(name))b.burn=2;
+ if(['Picada Venenosa','Ácido'].includes(name))b.poison=2;
+ if(name==='Pó do Sono')b.sleepTurn=state.turn+1;
+ if(['Disparo de Seda','Enrolar'].includes(name))b.weaken=true;
+ if(name==='Raio'&&rnd(100)<30)b.stunTurn=state.turn+1;
+}
 function checkEnd(){const win=state.foes.every(x=>x.hp<=0),lose=state.team.every(x=>x.hp<=0);if(!win&&!lose)return false;state.result=win?'win':'lose';state.finished=true;state.view='result';const progress=PokemonArenaProgress.recordBattle(state.result);state.wins=progress.wins;state.losses=progress.losses;return true}
-function resolveTurn(){if(state.finished)return;state.logs.push('— Turno '+state.turn+' —');for(const p of [...state.team,...state.foes])p.dodge=false;for(const q of state.queue.filter(q=>q.m[0]==='Esquiva'))attack(state.team[q.ally],null,q.m);for(const q of state.queue.filter(q=>q.m[0]!=='Esquiva')){const b=state.foes[q.target]||state.foes[firstAlive(state.foes)];attack(state.team[q.ally],b,q.m)}if(!checkEnd()){for(const e of state.foes){if(e.hp<=0)continue;const target=state.team.filter(x=>x.hp>0);if(!target.length)break;const m=moves(e.i)[rnd(3)];attack(e,target[rnd(target.length)],m)}if(!checkEnd()){for(const p of [...state.team,...state.foes])if(p.hp>0&&p.burn>0){p.hp=Math.max(0,p.hp-5);p.burn--;state.logs.push(N[p.i]+' sofreu queimadura (-5).')}checkEnd()}}state.queue=[];state.selectedMove=null;state.active=firstAlive(state.team);if(!state.finished){state.turn++;rollEnergy()}render()}
+function resolveTurn(){
+ if(state.finished)return;
+ state.logs.push('— Turno '+state.turn+' —');
+ for(const p of [...state.team,...state.foes])p.dodge=false;
+ const perform=(actor,enemySide,m,target)=>{
+  if(m[0]==='Pó do Sono'){
+   // Efeito em área: cada adversário vivo recebe dano e sono para o turno seguinte.
+   for(const foe of enemySide.filter(x=>x.hp>0))attack(actor,foe,m);
+  }else if(['Casco Duro','Esquiva'].includes(m[0]))attack(actor,null,m);
+  else attack(actor,target,m);
+ };
+ for(const q of state.queue.filter(q=>['Esquiva','Casco Duro'].includes(q.m[0])))perform(state.team[q.ally],state.foes,q.m,null);
+ for(const q of state.queue.filter(q=>!['Esquiva','Casco Duro'].includes(q.m[0]))){
+  const target=state.foes[q.target]||state.foes[firstAlive(state.foes)];
+  perform(state.team[q.ally],state.foes,q.m,target);
+ }
+ if(!checkEnd()){
+  for(const e of state.foes){
+   if(e.hp<=0)continue;
+   const targets=state.team.filter(x=>x.hp>0);if(!targets.length)break;
+   const actions=moves(e.i).filter(m=>m[0]!=='Esquiva');
+   const m=actions[rnd(actions.length)];
+   perform(e,state.team,m,targets[rnd(targets.length)]);
+  }
+  if(!checkEnd()){
+   for(const p of [...state.team,...state.foes]){
+    if(p.hp<=0)continue;
+    if(p.burn>0){p.hp=Math.max(0,p.hp-5);p.burn--;state.logs.push(N[p.i]+' sofreu queimadura (-5 HP).')}
+    if(p.poison>0){p.hp=Math.max(0,p.hp-5);p.poison--;state.logs.push(N[p.i]+' sofreu envenenamento (-5 HP).')}
+   }
+   checkEnd();
+  }
+ }
+ state.queue=[];state.selectedMove=null;state.active=firstAlive(state.team);
+ if(!state.finished){state.turn++;rollEnergy()}
+ render();
+}
 function resultView(){const win=state.result==='win',hero=state.team.find(x=>x.hp>0)||state.team[0];return `<section class="screen" style="padding:0"><div class="result"><h1>${win?'VITÓRIA!':'DERROTA'}</h1><img src="${card(hero.i)}" alt="${N[hero.i]}"><div class="result-info"><strong>${win?'Você venceu a batalha!':'Seu time foi derrotado.'}</strong><p>${win?'+100 EXP · recompensa demonstrativa':'Tente outra combinação de Pokémon.'}</p></div><button class="big blue" onclick="prepare();startBattle()">JOGAR NOVAMENTE</button><button class="big ghost" onclick="goHome()">VOLTAR AO MENU</button>${PokemonArenaProgress.read().streak>=3?'<button class="big" onclick="location.href=\'./missions.html\'">RESGATAR POKÉMON NAS MISSÕES</button>':''}</div></section>`}
 function goHome(){state.view='team';state.team=[];state.foes=[];state.queue=[];render()}
 function showSettings(){$('modal').innerHTML=`<h2>CONFIGURAÇÕES</h2><p>Pokémon Arena Alpha 0.9</p><p>Protótipo offline. As batalhas são contra o computador; multiplayer ainda não disponível.</p><button class="big ghost" onclick="closeModal()">FECHAR</button>`;$('overlay').classList.remove('hidden')}
