@@ -162,3 +162,61 @@ body.home-mode .app{padding-bottom:0!important}
 @media(prefers-reduced-motion:reduce){.home-details{animation:none}}
 /* Mantém o conteúdo legível acima da textura semitransparente da moldura. */
 .home-content{position:relative;z-index:6}
+
+/* v1.2.1 — ficha flutuante sobre os quatro botões, fora do leaderboard */
+.home-hero{isolation:isolate}
+.home-mode-area{z-index:8}
+.home-details--hero{
+ position:absolute;
+ left:0;
+ right:0;
+ bottom:calc(100% + 10px);
+ width:100%;
+ max-height:clamp(185px,17vw,232px);
+ overflow-y:auto;
+ overscroll-behavior:contain;
+ z-index:12;
+ margin:0;
+ scrollbar-width:thin;
+ scrollbar-color:#639bc7 #0a2847;
+}
+.home-details--hero .home-abilities{grid-template-columns:repeat(4,minmax(0,1fr));gap:7px}
+.home-details--hero .home-ability{min-height:85px}
+.home-details--hero .home-ability img{width:53px;height:58px}
+.home-details--hero .home-details-head{padding:7px 12px}
+.home-details--hero .home-details-portrait{width:48px;height:48px}
+.home-details--hero .home-details-title h2{font-size:17px;margin:2px 0}
+.home-details--hero .home-abilities{padding:7px 10px}
+.home-details--hero .home-details-footer{padding:0 10px 8px}
+@media(min-width:681px) and (max-width:1099px){
+ .home-details--hero{max-height:210px}
+ .home-details--hero .home-abilities{grid-template-columns:repeat(2,minmax(0,1fr))}
+}
+@media(max-width:680px){
+ .home-mode-area{z-index:8}
+ .home-details--hero{
+   left:0;right:0;
+   bottom:calc(100% + 6px);
+   width:100%;
+   max-height:156px;
+   margin:0;
+   border-width:2px;
+   border-top-width:4px;
+   border-radius:7px;
+ }
+ .home-details--hero .home-details-head{padding:5px 7px;gap:7px}
+ .home-details--hero .home-details-portrait{width:35px;height:35px}
+ .home-details--hero .home-details-eyebrow{font-size:8px;letter-spacing:0}
+ .home-details--hero .home-details-title h2{font-size:14px;margin:1px 0}
+ .home-details--hero .home-type{font-size:9px;padding:1px 5px}
+ .home-details--hero .home-details-close{width:25px;height:25px;font-size:19px}
+ .home-details--hero .home-abilities{grid-template-columns:repeat(2,minmax(0,1fr));padding:5px;gap:5px}
+ .home-details--hero .home-ability{padding:4px;gap:5px;min-height:70px}
+ .home-details--hero .home-ability img{width:38px;height:42px}
+ .home-details--hero .home-ability-top strong{font-size:10px}
+ .home-details--hero .home-ability-top span{font-size:8px}
+ .home-details--hero .home-ability-copy p{font-size:9px;margin:2px 0}
+ .home-details--hero .home-ability-copy small{font-size:9px}
+ .home-details--hero .home-details-footer{padding:0 6px 7px}
+ .home-details--hero .home-details-action{padding:7px;font-size:10px}
+}
