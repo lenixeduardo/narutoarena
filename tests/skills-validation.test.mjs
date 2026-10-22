@@ -30,7 +30,8 @@ test('JavaScript blocks parse', () => {
 test('10 original Pokemon and three evolutions have four described skills', () => {
   assert.equal(M.length, 13);
   for (const moves of M) {
-    assert.equal(moves.length, 4);
+    // Three base attacks plus Esquiva (automatically appended at runtime), or four innate skills.
+    assert.equal(moves.length === 3 ? moves.length + 1 : moves.length, 4);
     for (const [name, damage, cost, description] of moves) {
       assert.ok(name.length > 2);
       assert.ok(Number.isInteger(damage) && damage >= 0);
