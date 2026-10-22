@@ -125,7 +125,7 @@ const MOVE_EFFECTS={'Investida':'impact','Garra de Fogo':'fire','Lança-Chamas':
 const imgMove=(n,i)=>A[VERIFIED_MOVE_IMAGES[i+':'+n]]||portrait(i);
 const skillArt=(i,m)=>'<span class="skill-art skill-art--'+(MOVE_EFFECTS[m[0]]||'impact')+'" role="img" aria-label="'+N[i]+' usando '+m[0]+'"><img src="'+imgMove(m[0],i)+'" alt=""><i class="skill-art__fx" aria-hidden="true"></i></span>';
 
-const moves=i=>M[i].length===4?M[i]:[...M[i],['Esquiva',0,'A','Evita o primeiro ataque direcionado a este Pokémon durante o turno. Consome uma energia Coringa preta (qualquer tipo).']];
+const moves=i=>M[i].length===4?M[i]:[...M[i],['Esquiva',0,'A','Concede invulnerabilidade durante todo o turno: bloqueia todos os ataques, danos e efeitos negativos recebidos, inclusive em área e dano contínuo. Custo: 1 energia Coringa preta (qualquer tipo).']];
 const state={view:'team',filter:'Todos',picked:[],focus:0,team:[],foes:[],energy:{F:0,E:0,T:0,V:0},queue:[],turn:1,active:0,logs:[],finished:false,result:null,selectedMove:null,wins:PokemonArenaProgress.read().wins,losses:PokemonArenaProgress.read().losses};
 const $=id=>document.getElementById(id);
 document.documentElement.style.setProperty('--arena',`url("${A.arena_kanto}")`);
@@ -182,10 +182,10 @@ function attack(a,b,m){
  if(a.sleepTurn===state.turn){a.sleepTurn=0;state.logs.push(N[a.i]+' está dormindo e perdeu a ação.');return}
  if(a.stunTurn===state.turn){a.stunTurn=0;state.logs.push(N[a.i]+' está atordoado e perdeu a ação.');return}
  const name=m[0];
- if(name==='Esquiva'){a.dodge=true;state.logs.push(N[a.i]+' preparou Esquiva.');return}
+ if(name==='Esquiva'){a.dodge=true;state.logs.push(N[a.i]+' está invulnerável durante este turno.');return}
  if(name==='Casco Duro'){a.shield+=25;state.logs.push(N[a.i]+' recebeu 25 pontos de defesa ('+a.shield+' restantes).');return}
  if(!b||b.hp<=0)return;
- if(b.dodge){b.dodge=false;state.logs.push(N[b.i]+' esquivou do golpe '+name+'!');return}
+ if(b.dodge){state.logs.push(N[b.i]+' está invulnerável e bloqueou '+name+'!');return}
  let damage=m[1],reduced=false;
  if(damage>0&&a.weaken){damage=Math.ceil(damage/2);a.weaken=false;reduced=true}
  const absorbed=Math.min(b.shield||0,damage);
@@ -204,7 +204,7 @@ function checkEnd(){const win=state.foes.every(x=>x.hp<=0),lose=state.team.every
 function resolveTurn(){
  if(state.finished)return;
  state.logs.push('— Turno '+state.turn+' —');
- for(const p of [...state.team,...state.foes])p.dodge=false;
+ // A invulnerabilidade dura todo o turno; é encerrada somente ao final da rodada.
  const perform=(actor,enemySide,m,target)=>{
   if(actor.sleepTurn===state.turn||actor.stunTurn===state.turn){attack(actor,null,m);return}
   if(m[0]==='Pó do Sono'){
@@ -229,12 +229,14 @@ function resolveTurn(){
   if(!checkEnd()){
    for(const p of [...state.team,...state.foes]){
     if(p.hp<=0)continue;
-    if(p.burn>0){p.hp=Math.max(0,p.hp-5);p.burn--;state.logs.push(N[p.i]+' sofreu queimadura (-5 HP).')}
-    if(p.poison>0){p.hp=Math.max(0,p.hp-5);p.poison--;state.logs.push(N[p.i]+' sofreu envenenamento (-5 HP).')}
+    if(p.burn>0){p.burn--;if(!p.dodge){p.hp=Math.max(0,p.hp-5);state.logs.push(N[p.i]+' sofreu queimadura (-5 HP).')}else state.logs.push(N[p.i]+' ignorou a queimadura graças à invulnerabilidade.')}
+    if(p.poison>0){p.poison--;if(!p.dodge){p.hp=Math.max(0,p.hp-5);state.logs.push(N[p.i]+' sofreu envenenamento (-5 HP).')}else state.logs.push(N[p.i]+' ignorou o veneno graças à invulnerabilidade.')}
    }
    checkEnd();
   }
  }
+ // O benefício termina ao concluir a rodada, sem persistir no turno seguinte.
+ for(const p of [...state.team,...state.foes])p.dodge=false;
  state.queue=[];state.selectedMove=null;state.active=firstAlive(state.team);
  if(!state.finished){state.turn++;rollEnergy()}
  render();
