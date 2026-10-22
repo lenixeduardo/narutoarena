@@ -145,6 +145,7 @@ function energyPlan(m,available,u){
  for(const k of needs.filter(x=>x==='A')){const actual=Object.keys(pool).find(t=>pool[t]>0);if(!actual)return null;pool[actual]--;spent.push(actual)}
  return spent;
 }
+function actionBlocked(u,m){return (u.sleepTurn===state.turn||u.stunTurn===state.turn)&&m[0]!=='Casco Duro'}
 function affordable(m,u,available=state.energy){return energyPlan(m,available,u)!==null}
 function pay(m,u,available=state.energy){
  const spent=energyPlan(m,available,u);
@@ -185,65 +186,121 @@ function firstAlive(arr){return arr.findIndex(x=>x.hp>0)}
 function activeUnit(){return state.team[state.active]}
 function selectAlly(i){if(!state.team[i]||state.team[i].hp<=0)return;state.active=i;state.selectedMove=null;render()}
 function selectEnemy(i){if(!state.selectedMove||state.foes[i].hp<=0)return;queueAction(i)}
-function skillHover(j){const u=activeUnit(),panel=document.getElementById('skill-hover-detail');if(!u||!panel)return;const m=moves(u.i)[j];if(!m)return;const cost=labelCost(m,u);const ready=affordable(m,u)&&u.sleepTurn!==state.turn&&u.stunTurn!==state.turn&&!state.queue.some(q=>q.ally===state.active);panel.innerHTML=`<div class="skill-hover-heading"><strong>${escapeHTML(m[0]).toUpperCase()}</strong><span class="skill-hover-energy">${energyPips(m,u)} ${escapeHTML(cost)}</span></div><p>${escapeHTML(m[3])}</p><div class="skill-hover-meta"><span>PODER: ${m[1]||'—'}</span><span>${ready?'DISPONÍVEL':'ENERGIA INSUFICIENTE OU AÇÃO JÁ USADA'}</span></div>`;panel.hidden=false;}
+function skillHover(j){const u=activeUnit(),panel=document.getElementById('skill-hover-detail');if(!u||!panel)return;const m=moves(u.i)[j];if(!m)return;const cost=labelCost(m,u);const ready=affordable(m,u)&&!actionBlocked(u,m)&&!state.queue.some(q=>q.ally===state.active);panel.innerHTML=`<div class="skill-hover-heading"><strong>${escapeHTML(m[0]).toUpperCase()}</strong><span class="skill-hover-energy">${energyPips(m,u)} ${escapeHTML(cost)}</span></div><p>${escapeHTML(m[3])}</p><div class="skill-hover-meta"><span>PODER: ${m[1]||'—'}</span><span>${ready?'DISPONÍVEL':'ENERGIA INSUFICIENTE OU AÇÃO JÁ USADA'}</span></div>`;panel.hidden=false;}
 function skillHoverEnd(){const panel=document.getElementById('skill-hover-detail');if(panel)panel.hidden=true;}
-function showMove(j){const u=activeUnit();if(!u||u.hp<=0||u.sleepTurn===state.turn||u.stunTurn===state.turn||state.queue.some(x=>x.ally===state.active))return;const m=moves(u.i)[j];if(!affordable(m,u))return;state.selectedMove={j};$('modal').innerHTML=`<div style="display:flex;justify-content:space-between;align-items:center"><h2>${m[0].toUpperCase()}</h2><button class="gear" onclick="closeModal()">×</button></div>${skillArt(u.i,m)}<p>${m[3]}</p><div class="skill-energy">${energyPips(m,u)}<span>${labelCost(m,u)}</span></div><div class="stats"><div><small>PODER</small><strong>${m[1]}</strong></div><div><small>CUSTO</small><strong style="font-size:12px">${labelCost(m,u)}</strong></div></div><button class="big red" onclick="confirmMove()">USAR GOLPE</button><button class="big ghost" onclick="closeModal()">VOLTAR</button>`;$('overlay').classList.remove('hidden')}
+function showMove(j){const u=activeUnit();if(!u||u.hp<=0||state.queue.some(x=>x.ally===state.active))return;const m=moves(u.i)[j];if(actionBlocked(u,m)||!affordable(m,u))return;state.selectedMove={j};$('modal').innerHTML=`<div style="display:flex;justify-content:space-between;align-items:center"><h2>${m[0].toUpperCase()}</h2><button class="gear" onclick="closeModal()">×</button></div>${skillArt(u.i,m)}<p>${m[3]}</p><div class="skill-energy">${energyPips(m,u)}<span>${labelCost(m,u)}</span></div><div class="stats"><div><small>PODER</small><strong>${m[1]}</strong></div><div><small>CUSTO</small><strong style="font-size:12px">${labelCost(m,u)}</strong></div></div><button class="big red" onclick="confirmMove()">USAR GOLPE</button><button class="big ghost" onclick="closeModal()">VOLTAR</button>`;$('overlay').classList.remove('hidden')}
 function closeModal(){$('overlay').classList.add('hidden')}
 function confirmMove(){const u=activeUnit(),m=moves(u.i)[state.selectedMove.j];closeModal();if(['Esquiva','Casco Duro','Pó do Sono'].includes(m[0])){queueAction(null);return}state.logs.push('Escolha um adversário como alvo.');render()}
-function queueAction(target){if(!state.selectedMove)return;const u=activeUnit();if(!u||u.hp<=0||u.sleepTurn===state.turn||u.stunTurn===state.turn)return;const m=state.selectedMove.j===-1?DODGE_MOVE:moves(u.i)[state.selectedMove.j];if(!m||!affordable(m,u))return;const spent=pay(m,u);if(spent===null)return;state.queue.push({ally:state.active,m,target,spent});state.selectedMove=null;state.active=state.team.findIndex((x,i)=>x.hp>0&&!state.queue.some(q=>q.ally===i));if(state.active<0)state.active=firstAlive(state.team);render()}
+function queueAction(target){if(!state.selectedMove)return;const u=activeUnit();if(!u||u.hp<=0)return;const m=state.selectedMove.j===-1?DODGE_MOVE:moves(u.i)[state.selectedMove.j];if(!m||actionBlocked(u,m)||!affordable(m,u))return;const spent=pay(m,u);if(spent===null)return;state.queue.push({ally:state.active,m,target,spent});state.selectedMove=null;state.active=state.team.findIndex((x,i)=>x.hp>0&&!state.queue.some(q=>q.ally===i));if(state.active<0)state.active=firstAlive(state.team);render()}
 function showDodge(){const u=activeUnit();if(!u||u.hp<=0||state.queue.some(q=>q.ally===state.active)||!affordable(DODGE_MOVE,u))return;state.selectedMove={j:-1};queueAction(null)}
 function removeAction(i){const q=state.queue.splice(i,1)[0];if(q)for(const k of q.spent)state.energy[k]++;render()}
-function battleView(){const u=activeUnit(),enemy=state.foes[firstAlive(state.foes)]||state.foes[0],friend=state.team[firstAlive(state.team)]||state.team[0];return `<section class="screen"><div class="arena-battle"><div class="turn">TURNO ${state.turn}</div><div class="ally-hud"><b>${N[friend.i]}</b><div class="health"><span style="width:${friend.hp}%"></span></div><small>HP ${friend.hp}/100</small></div><div class="enemy-hud"><b>${N[enemy.i]}</b><div class="health"><span style="width:${enemy.hp}%"></span></div><small>HP ${enemy.hp}/100</small></div><img class="battle-sprite sprite-ally" src="${portrait(friend.i)}" alt="Pokémon aliado"><img class="battle-sprite sprite-enemy" src="${portrait(enemy.i)}" alt="Pokémon rival"><div class="battle-command"><div class="battle-command-title">O que ${u?N[u.i]:'seu time'} vai fazer?</div><div class="skill-hover-detail" id="skill-hover-detail" role="status" aria-live="polite" hidden></div><div class="battle-actions">${u?moves(u.i).map((m,j)=>`<div class="skill-hover-wrap" onmouseenter="skillHover(${j})" onmouseleave="skillHoverEnd()" onfocusin="skillHover(${j})" onfocusout="skillHoverEnd()"><button ${!affordable(m,u)||u.sleepTurn===state.turn||u.stunTurn===state.turn||state.queue.some(q=>q.ally===state.active)?'disabled':''} onclick="showMove(${j})" aria-label="${escapeHTML(m[0])}: ${escapeHTML(m[3])}. Custo: ${labelCost(m,u)}">${skillArt(u.i,m)}<span>${m[0]}</span></button></div>`).join(''):''}</div>${u&&!hasInnateDodge(u.i)?`<button class="big ghost" style="margin-top:8px" onclick="showDodge()" ${!affordable(DODGE_MOVE,u)||u.sleepTurn===state.turn||u.stunTurn===state.turn||state.queue.some(q=>q.ally===state.active)?'disabled':''}>ESQUIVA · INVULNERÁVEL POR 1 TURNO (${labelCost(DODGE_MOVE,u)})</button>`:''}</div></div><div class="card"><div class="card-title">SEU TIME · SELECIONE UM POKÉMON</div><div class="battle-select">${state.team.map((x,i)=>`<button class="${state.active===i?'active':''}" ${x.hp<=0?'disabled':''} onclick="selectAlly(${i})"><img src="${card(x.i)}" alt=""><span>${N[x.i]}</span><br>${x.hp} HP</button>`).join('')}</div></div><div class="card"><div class="card-title">RIVAIS · TOQUE PARA DEFINIR O ALVO</div><div class="battle-select">${state.foes.map((x,i)=>`<button ${x.hp<=0?'disabled':''} onclick="selectEnemy(${i})"><img src="${card(x.i)}" alt=""><span>${N[x.i]}</span><br>${x.hp} HP</button>`).join('')}</div></div><div class="card"><div class="card-title">ENERGIAS DISPONÍVEIS</div><div class="energy">${Object.entries(state.energy).map(([k,v])=>`<span>${ENERGY_NAMES[k]}: <b>${v}</b></span>`).join('')}</div></div><div class="card queue"><strong>FILA DE AÇÕES (${state.queue.length}/3)</strong>${state.queue.map((q,i)=>`<p>${N[state.team[q.ally].i]} → ${q.m[0]} <button onclick="removeAction(${i})">Remover</button></p>`).join('')}<button class="big" onclick="resolveTurn()">${state.queue.length?'CONFIRMAR TURNO':'PASSAR TURNO'}</button><button class="big ghost" onclick="clearQueue()">LIMPAR FILA</button></div><div class="card queue"><strong>HISTÓRICO</strong>${state.logs.slice(-7).reverse().map(x=>`<p>${escapeHTML(x)}</p>`).join('')}</div></section>`}
+function battleView(){const u=activeUnit(),enemy=state.foes[firstAlive(state.foes)]||state.foes[0],friend=state.team[firstAlive(state.team)]||state.team[0];return `<section class="screen"><div class="arena-battle"><div class="turn">TURNO ${state.turn}</div><div class="ally-hud"><b>${N[friend.i]}</b><div class="health"><span style="width:${friend.hp}%"></span></div><small>HP ${friend.hp}/100</small></div><div class="enemy-hud"><b>${N[enemy.i]}</b><div class="health"><span style="width:${enemy.hp}%"></span></div><small>HP ${enemy.hp}/100</small></div><img class="battle-sprite sprite-ally" src="${portrait(friend.i)}" alt="Pokémon aliado"><img class="battle-sprite sprite-enemy" src="${portrait(enemy.i)}" alt="Pokémon rival"><div class="battle-command"><div class="battle-command-title">O que ${u?N[u.i]:'seu time'} vai fazer?</div><div class="skill-hover-detail" id="skill-hover-detail" role="status" aria-live="polite" hidden></div><div class="battle-actions">${u?moves(u.i).map((m,j)=>`<div class="skill-hover-wrap" onmouseenter="skillHover(${j})" onmouseleave="skillHoverEnd()" onfocusin="skillHover(${j})" onfocusout="skillHoverEnd()"><button ${!affordable(m,u)||actionBlocked(u,m)||state.queue.some(q=>q.ally===state.active)?'disabled':''} onclick="showMove(${j})" aria-label="${escapeHTML(m[0])}: ${escapeHTML(m[3])}. Custo: ${labelCost(m,u)}">${skillArt(u.i,m)}<span>${m[0]}</span></button></div>`).join(''):''}</div>${u&&!hasInnateDodge(u.i)?`<button class="big ghost" style="margin-top:8px" onclick="showDodge()" ${!affordable(DODGE_MOVE,u)||u.sleepTurn===state.turn||u.stunTurn===state.turn||state.queue.some(q=>q.ally===state.active)?'disabled':''}>ESQUIVA · INVULNERÁVEL POR 1 TURNO (${labelCost(DODGE_MOVE,u)})</button>`:''}</div></div><div class="card"><div class="card-title">SEU TIME · SELECIONE UM POKÉMON</div><div class="battle-select">${state.team.map((x,i)=>`<button class="${state.active===i?'active':''}" ${x.hp<=0?'disabled':''} onclick="selectAlly(${i})"><img src="${card(x.i)}" alt=""><span>${N[x.i]}</span><br>${x.hp} HP</button>`).join('')}</div></div><div class="card"><div class="card-title">RIVAIS · TOQUE PARA DEFINIR O ALVO</div><div class="battle-select">${state.foes.map((x,i)=>`<button ${x.hp<=0?'disabled':''} onclick="selectEnemy(${i})"><img src="${card(x.i)}" alt=""><span>${N[x.i]}</span><br>${x.hp} HP</button>`).join('')}</div></div><div class="card"><div class="card-title">ENERGIAS DISPONÍVEIS</div><div class="energy">${Object.entries(state.energy).map(([k,v])=>`<span>${ENERGY_NAMES[k]}: <b>${v}</b></span>`).join('')}</div></div><div class="card queue"><strong>FILA DE AÇÕES (${state.queue.length}/3)</strong>${state.queue.map((q,i)=>`<p>${N[state.team[q.ally].i]} → ${q.m[0]} <button onclick="removeAction(${i})">Remover</button></p>`).join('')}<button class="big" onclick="resolveTurn()">${state.queue.length?'CONFIRMAR TURNO':'PASSAR TURNO'}</button><button class="big ghost" onclick="clearQueue()">LIMPAR FILA</button></div><div class="card queue"><strong>HISTÓRICO</strong>${state.logs.slice(-7).reverse().map(x=>`<p>${escapeHTML(x)}</p>`).join('')}</div></section>`}
 function escapeHTML(s){return String(s).replaceAll('&','&amp;').replaceAll('<','&lt;')}
 function clearQueue(){while(state.queue.length){const q=state.queue.pop();for(const k of q.spent)state.energy[k]++}state.selectedMove=null;render()}
 function attack(a,b,m){
- if(!a||a.hp<=0)return;
- if(a.sleepTurn===state.turn){a.sleepTurn=0;state.logs.push(N[a.i]+' está dormindo e perdeu a ação.');return}
- if(a.stunTurn===state.turn){a.stunTurn=0;state.logs.push(N[a.i]+' está atordoado e perdeu a ação.');return}
+ if(!a||a.hp<=0)return false;
  const name=m[0];
- if(name==='Esquiva'){a.dodge=true;state.logs.push(N[a.i]+' está invulnerável durante este turno.');return}
- if(name==='Casco Duro'){a.shield+=25;state.logs.push(N[a.i]+' recebeu 25 pontos de defesa ('+a.shield+' restantes).');return}
- if(!b||b.hp<=0)return;
- if(b.dodge){state.logs.push(N[b.i]+' está invulnerável e bloqueou '+name+'!');return}
+ if(actionBlocked(a,m)){
+  const effect=a.sleepTurn===state.turn?'dormindo':'atordoado';
+  state.logs.push(N[a.i]+' está '+effect+' e perdeu a ação.');
+  return false;
+ }
+ if(name==='Esquiva'){
+  a.dodge=true;a.costTax=0;
+  state.logs.push(N[a.i]+' está invulnerável durante este turno.');
+  return true;
+ }
+ if(name==='Casco Duro'){
+  a.shield=Math.min(50,(a.shield||0)+25);
+  a.burn=0;a.poison=0;a.sleepTurn=0;a.stunTurn=0;a.weaken=false;a.costTax=0;
+  state.logs.push(N[a.i]+' ganhou 25 de escudo (até 50) e removeu os efeitos negativos.');
+  return true;
+ }
+ if(!b||b.hp<=0)return false;
+ a.costTax=0;
+ if(b.dodge){state.logs.push(N[b.i]+' está invulnerável e bloqueou '+name+'!');return true}
  let damage=m[1],reduced=false;
  if(damage>0&&a.weaken){damage=Math.ceil(damage/2);a.weaken=false;reduced=true}
  const absorbed=Math.min(b.shield||0,damage);
  b.shield=(b.shield||0)-absorbed;
  const actual=damage-absorbed;
  b.hp=Math.max(0,b.hp-actual);
- state.logs.push(N[a.i]+' usou '+name+' em '+N[b.i]+' (-'+actual+' HP'+(absorbed?', '+absorbed+' absorvidos pela defesa':'')+(reduced?', dano reduzido por seda/enrolar':'')+').');
- if(b.hp<=0)return;
+ state.logs.push(N[a.i]+' usou '+name+' em '+N[b.i]+' (-'+actual+' HP'+(absorbed?', '+absorbed+' absorvidos pelo escudo':'')+(reduced?', dano reduzido':'')+').');
+ if(b.hp<=0)return true;
  if(['Lança-Chamas','Brasa'].includes(name))b.burn=2;
  if(['Picada Venenosa','Ácido'].includes(name))b.poison=2;
  if(name==='Pó do Sono')b.sleepTurn=state.turn+1;
  if(['Disparo de Seda','Enrolar'].includes(name))b.weaken=true;
  if(name==='Raio'&&rnd(100)<30)b.stunTurn=state.turn+1;
+ if(name==='Choque do Trovão'&&a.i===9){
+  b.costTax=1;
+  state.logs.push(N[b.i]+' recebeu Sobrecarga: próxima habilidade custa +1 energia coringa.');
+ }
+ if(name==='Mordida'&&a.i===8){
+  const source=state.team.includes(b)?state.energy:state.enemyEnergy;
+  const destination=state.team.includes(a)?state.energy:state.enemyEnergy;
+  const stolen=Object.keys(source).find(k=>source[k]>0);
+  if(stolen){source[stolen]--;destination[stolen]++;state.logs.push(N[a.i]+' roubou 1 energia '+ENERGY_NAMES[stolen]+'!')}
+  else state.logs.push(N[a.i]+' não encontrou energia disponível para roubar.');
+ }
+ return true;
 }
-function checkEnd(){if(state.finished)return true;const win=state.foes.every(x=>x.hp<=0),lose=state.team.every(x=>x.hp<=0);if(!win&&!lose)return false;state.result=win?'win':'lose';state.finished=true;state.view='result';const progress=PokemonArenaProgress.recordBattle(state.result);state.wins=progress.wins;state.losses=progress.losses;return true}
+function checkEnd(){
+ if(state.finished)return true;
+ const win=state.foes.every(x=>x.hp<=0),lose=state.team.every(x=>x.hp<=0);
+ if(!win&&!lose)return false;
+ state.result=win?'win':'lose';state.finished=true;state.view='result';
+ const progress=PokemonArenaProgress.recordBattle(state.result);
+ state.wins=progress.wins;state.losses=progress.losses;
+ return true;
+}
 function resolveTurn(){
  if(state.finished)return;
  state.logs.push('— Turno '+state.turn+' —');
- // A invulnerabilidade dura todo o turno; é encerrada somente ao final da rodada.
  const perform=(actor,enemySide,m,target)=>{
-  if(actor.sleepTurn===state.turn||actor.stunTurn===state.turn){attack(actor,null,m);return}
+  if(actionBlocked(actor,m)){attack(actor,null,m);return}
   if(m[0]==='Pó do Sono'){
-   // Efeito em área: cada adversário vivo recebe dano e sono para o turno seguinte.
-   for(const foe of enemySide.filter(x=>x.hp>0))attack(actor,foe,m);
+   // Área: o atacante gasta apenas uma ação, atingindo todos os adversários vivos.
+   const weakened=actor.weaken;
+   for(const foe of enemySide.filter(x=>x.hp>0)){actor.weaken=weakened;attack(actor,foe,m)}
+   actor.weaken=false;
   }else if(['Casco Duro','Esquiva'].includes(m[0]))attack(actor,null,m);
   else attack(actor,target,m);
  };
- for(const q of state.queue.filter(q=>['Esquiva','Casco Duro'].includes(q.m[0])))perform(state.team[q.ally],state.foes,q.m,null);
+ // Defesas dos dois lados são executadas antes dos ataques da rodada.
+ const enemyDefended=new Set();
+ for(const enemy of state.foes){
+  if(enemy.hp<=0)continue;
+  const shell=moves(enemy.i).find(m=>m[0]==='Casco Duro');
+  const blocked=enemy.sleepTurn===state.turn||enemy.stunTurn===state.turn;
+  const defense=blocked?shell:enemy.hp<=45?(shell&&enemy.shield<20?shell:DODGE_MOVE):null;
+  if(!defense||(!blocked&&rnd(100)>=60)||!affordable(defense,enemy,state.enemyEnergy))continue;
+  pay(defense,enemy,state.enemyEnergy);
+  perform(enemy,state.team,defense,null);
+  enemyDefended.add(enemy);
+ }
+ for(const q of state.queue.filter(q=>['Esquiva','Casco Duro'].includes(q.m[0]))){
+  perform(state.team[q.ally],state.foes,q.m,null);
+ }
  for(const q of state.queue.filter(q=>!['Esquiva','Casco Duro'].includes(q.m[0]))){
   const target=state.foes[q.target]||state.foes[firstAlive(state.foes)];
   perform(state.team[q.ally],state.foes,q.m,target);
  }
  if(!checkEnd()){
-  for(const e of state.foes){
-   if(e.hp<=0)continue;
-   const targets=state.team.filter(x=>x.hp>0);if(!targets.length)break;
-   const actions=moves(e.i).filter(m=>m[0]!=='Esquiva');
-   const m=actions[rnd(actions.length)];
-   perform(e,state.team,m,targets[rnd(targets.length)]);
+  for(const enemy of state.foes){
+   if(enemy.hp<=0||enemyDefended.has(enemy))continue;
+   const targets=state.team.filter(x=>x.hp>0&&!x.dodge);
+   if(!targets.length){state.logs.push(N[enemy.i]+' não encontrou alvos vulneráveis.');continue}
+   if(enemy.sleepTurn===state.turn||enemy.stunTurn===state.turn){
+    state.logs.push(N[enemy.i]+' perdeu a ação por sono/atordoamento.');
+    continue;
+   }
+   const options=moves(enemy.i).filter(m=>m[0]!=='Esquiva'&&m[0]!=='Casco Duro'&&affordable(m,enemy,state.enemyEnergy));
+   if(!options.length){state.logs.push(N[enemy.i]+' passou o turno: energia insuficiente.');continue}
+   const m=options[rnd(options.length)];
+   const target=targets[rnd(targets.length)];
+   if(pay(m,enemy,state.enemyEnergy)===null)continue;
+   perform(enemy,state.team,m,target);
   }
   if(!checkEnd()){
    for(const p of [...state.team,...state.foes]){
@@ -254,7 +311,6 @@ function resolveTurn(){
    checkEnd();
   }
  }
- // O benefício termina ao concluir a rodada, sem persistir no turno seguinte.
  for(const p of [...state.team,...state.foes])p.dodge=false;
  state.queue=[];state.selectedMove=null;state.active=firstAlive(state.team);
  if(!state.finished){state.turn++;rollEnergy()}
