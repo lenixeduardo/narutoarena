@@ -304,3 +304,19 @@ body.home-mode .app{padding-bottom:0!important}
  .home-modebtn{font-size:8px}
  .home-content{padding-left:8px;padding-right:8px}
 }
+
+/* Evoluções obtidas exclusivamente nas missões */
+.home-mission-unlock-link{
+ display:flex;align-items:center;gap:7px;margin-top:9px;
+ padding:8px 10px;border-radius:6px;border:1px solid #b6cfe3;
+ background:#edf6fc;color:#173d60;text-decoration:none;
+ font-size:11px;line-height:1.35;font-weight:800;
+}
+.home-mission-unlock-link:hover,.home-mission-unlock-link:focus-visible{
+ background:#dceefb;color:#0b3256;border-color:#5e9fc8;
+}
+.home-mission-lock-icon{width:16px;height:16px;flex:none}
+@media(max-width:680px){
+ .home-mission-unlock-link{font-size:10px;padding:7px 9px;margin-top:8px}
+ .home-poke.locked .home-locked-label small{font-size:7px;letter-spacing:.15px}
+}
