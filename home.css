@@ -259,3 +259,18 @@ body.home-mode .app{padding-bottom:0!important}
 .home-hero{margin-top:0}
 .home-mode-area{margin-top:0}
 @media(max-width:680px){.home-container{padding-top:0}}
+
+/* Mobile fidelity: square roster cards, consistent rows, unclipped art. */
+@media(max-width:680px){
+ .home-roster{display:grid!important;grid-template-columns:repeat(3,minmax(0,1fr))!important;grid-auto-rows:auto!important;align-items:stretch!important;gap:7px!important;overflow:visible!important;max-height:none!important;height:auto!important}
+ .home-roster .home-poke,.home-roster .home-poke.locked{width:100%!important;height:auto!important;min-width:0!important;min-height:0!important;aspect-ratio:1.13!important;align-self:stretch!important;overflow:hidden!important;position:relative!important}
+ .home-roster .home-poke img{width:100%!important;height:100%!important;display:block!important;object-fit:cover!important;object-position:center 38%!important}
+ .home-left{min-width:0!important;overflow:visible!important}
+ .home-content{align-items:start!important}
+ .home-roster-controls{margin-top:11px!important}
+ .home-hero{height:280px!important}
+ .home-hero-art{bottom:0!important}
+ .home-mode-area{width:100%!important}
+ .home-modes{grid-template-columns:repeat(4,minmax(0,1fr))!important}
+ .home-modebtn{min-width:0!important}
+}
