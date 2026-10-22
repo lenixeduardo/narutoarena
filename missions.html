@@ -71,6 +71,14 @@
 @media(max-width:370px){.mission{grid-template-columns:minmax(0,1fr) 70px}.mission-aside .portrait{min-height:70px}.logo-pokemon{font-size:18px}.logo-arena{font-size:15px}}
 .missions[hidden],.empty[hidden],.note[hidden]{display:none!important}
 @media(prefers-reduced-motion:reduce){*{scroll-behavior:auto!important}}
+.mission .locked{cursor:not-allowed;transition:background .18s,color .18s,border-color .18s}
+.mission .locked.ready{cursor:pointer;color:#fff;background:#bf263d;border-color:#9f2034;box-shadow:0 3px 10px #a5233435}
+.mission .locked.ready:hover{background:#a91930}
+.mission .locked.unlocked{color:#136449;background:#e7f8f0;border-color:#b2e3cc}
+.mission .locked.ready svg,.mission .locked.unlocked svg{display:none}
+.mission.completed{border-color:#a9d9c3;background:#f7fffa}
+.mission-toast{margin:10px 0 0;font-weight:700;color:#126044;font-size:13px;min-height:0}
+.mission-toast:empty{display:none}
 </style>
 </head>
 <body>
@@ -106,20 +114,50 @@
 <section class="content" aria-label="Lista de missões">
 <header class="section-title"><span class="section-ball" aria-hidden="true"></span><div><h2 id="section-heading">Desbloqueio de Pokémon</h2><p id="section-desc">Complete as missões abaixo para desbloquear novos Pokémon e adicioná-los ao seu time.</p></div></header>
 <div class="missions" id="mission-list">
-<article class="mission" data-mission="unlock"><div class="mission-art fire" role="img" aria-label="Charmeleon usando Lança-Chamas em uma floresta, conforme o mockup"></div><div class="mission-body"><h3>Crescendo através do Calor</h3><p class="mission-desc">Charmeleon evolui quando enfrenta batalhas intensas. Prove sua força e desbloqueie o Charmeleon para o seu time.</p><div class="requirement"><svg aria-hidden="true"><use href="#icon-swords"/></svg><span>Ganhe 3 vitórias em sequência</span><strong>0/3</strong></div></div><div class="mission-aside"><div class="locked"><svg aria-hidden="true"><use href="#icon-lock"/></svg>BLOQUEADO</div><div class="portrait fire" role="img" aria-label="Retrato do Charmeleon"></div></div></article>
-<article class="mission" data-mission="unlock"><div class="mission-art water" role="img" aria-label="Wartortle treinando nas águas de um rio, conforme o mockup"></div><div class="mission-body"><h3>Evolução Constante</h3><p class="mission-desc">Wartortle se torna mais forte ao enfrentar oponentes cada vez mais desafiadores. Prove sua evolução no Pokémon Arena e desbloqueie o Wartortle.</p><div class="requirement"><svg aria-hidden="true"><use href="#icon-swords"/></svg><span>Ganhe 3 vitórias em sequência</span><strong>0/3</strong></div></div><div class="mission-aside"><div class="locked"><svg aria-hidden="true"><use href="#icon-lock"/></svg>BLOQUEADO</div><div class="portrait water" role="img" aria-label="Retrato do Wartortle"></div></div></article>
-<article class="mission" data-mission="unlock"><div class="mission-art sun" role="img" aria-label="Ivysaur em um campo florido sob o sol, conforme o mockup"></div><div class="mission-body"><h3>Força que vem do Sol</h3><p class="mission-desc">Ivysaur se fortalece com a energia do sol. Mostre sua habilidade em batalhas e desbloqueie o Ivysaur para o seu time.</p><div class="requirement"><svg aria-hidden="true"><use href="#icon-swords"/></svg><span>Ganhe 3 vitórias em sequência</span><strong>0/3</strong></div></div><div class="mission-aside"><div class="locked"><svg aria-hidden="true"><use href="#icon-lock"/></svg>BLOQUEADO</div><div class="portrait sun" role="img" aria-label="Retrato do Ivysaur"></div></div></article>
+<article class="mission" data-mission="unlock" data-pokemon="Charmeleon"><div class="mission-art fire" role="img" aria-label="Charmeleon usando Lança-Chamas em uma floresta, conforme o mockup"></div><div class="mission-body"><h3>Crescendo através do Calor</h3><p class="mission-desc">Charmeleon evolui quando enfrenta batalhas intensas. Prove sua força e desbloqueie o Charmeleon para o seu time.</p><div class="requirement"><svg aria-hidden="true"><use href="#icon-swords"/></svg><span>Ganhe 3 vitórias em sequência</span><strong>0/3</strong></div></div><div class="mission-aside"><button type="button" class="locked" data-claim="Charmeleon" disabled><svg aria-hidden="true"><use href="#icon-lock"/></svg>BLOQUEADO</button><div class="portrait fire" role="img" aria-label="Retrato do Charmeleon"></div></div></article>
+<article class="mission" data-mission="unlock" data-pokemon="Wartortle"><div class="mission-art water" role="img" aria-label="Wartortle treinando nas águas de um rio, conforme o mockup"></div><div class="mission-body"><h3>Evolução Constante</h3><p class="mission-desc">Wartortle se torna mais forte ao enfrentar oponentes cada vez mais desafiadores. Prove sua evolução no Pokémon Arena e desbloqueie o Wartortle.</p><div class="requirement"><svg aria-hidden="true"><use href="#icon-swords"/></svg><span>Ganhe 3 vitórias em sequência</span><strong>0/3</strong></div></div><div class="mission-aside"><button type="button" class="locked" data-claim="Wartortle" disabled><svg aria-hidden="true"><use href="#icon-lock"/></svg>BLOQUEADO</button><div class="portrait water" role="img" aria-label="Retrato do Wartortle"></div></div></article>
+<article class="mission" data-mission="unlock" data-pokemon="Ivysaur"><div class="mission-art sun" role="img" aria-label="Ivysaur em um campo florido sob o sol, conforme o mockup"></div><div class="mission-body"><h3>Força que vem do Sol</h3><p class="mission-desc">Ivysaur se fortalece com a energia do sol. Mostre sua habilidade em batalhas e desbloqueie o Ivysaur para o seu time.</p><div class="requirement"><svg aria-hidden="true"><use href="#icon-swords"/></svg><span>Ganhe 3 vitórias em sequência</span><strong>0/3</strong></div></div><div class="mission-aside"><button type="button" class="locked" data-claim="Ivysaur" disabled><svg aria-hidden="true"><use href="#icon-lock"/></svg>BLOQUEADO</button><div class="portrait sun" role="img" aria-label="Retrato do Ivysaur"></div></div></article>
 </div>
 <div class="empty" id="empty-state" hidden><h3>Nenhuma missão disponível</h3><p>Esta categoria ainda não possui missões cadastradas.</p></div>
-<p class="note" id="progress-note">Progresso ilustrativo: a contagem de vitórias ainda não está conectada ao motor de batalhas.</p>
+<p class="mission-toast" id="mission-toast" role="status" aria-live="polite"></p><p class="note" id="progress-note">Cada missão exige 3 vitórias consecutivas. Resgatar um Pokémon reinicia a sequência para a próxima missão.</p>
 </section>
 </main>
+<script src="progression.js?v=20261021-mission-unlocks"></script>
 <script>
 (function(){
 const buttons=[...document.querySelectorAll('[data-category]')];
 const list=document.getElementById('mission-list'),empty=document.getElementById('empty-state');
 const heading=document.getElementById('section-heading'),desc=document.getElementById('section-desc'),note=document.getElementById('progress-note');
 const labels={all:'Desbloqueio de Pokémon',unlock:'Desbloqueio de Pokémon'};
+const progress=window.PokemonArenaProgress;
+const toast=document.getElementById('mission-toast');
+function updateProgress(){
+ const p=progress.read();
+ list.querySelectorAll('.mission').forEach(article=>{
+  const name=article.dataset.pokemon;
+  const claimed=p.unlocked.includes(name);
+  const ready=!claimed&&p.streak>=3;
+  const button=article.querySelector('[data-claim]');
+  const count=article.querySelector('.requirement strong');
+  count.textContent=claimed?'3/3':p.streak+'/3';
+  button.disabled=!ready;
+  button.classList.toggle('ready',ready);
+  button.classList.toggle('unlocked',claimed);
+  article.classList.toggle('completed',claimed);
+  button.innerHTML=claimed?'DESBLOQUEADO':ready?'RESGATAR':\'<svg aria-hidden="true"><use href="#icon-lock"/></svg>BLOQUEADO\';
+  button.setAttribute('aria-label',claimed?name+' desbloqueado':ready?'Resgatar '+name:name+' bloqueado. Ganhe 3 vitórias consecutivas');
+ });
+ note.textContent=p.streak>=3?'Missão concluída! Resgate um Pokémon. Cada resgate consome a sequência de 3 vitórias.':'Sequência atual: '+p.streak+'/3 vitórias. Cada resgate exige uma nova sequência de 3 vitórias.';
+}
+list.querySelectorAll('[data-claim]').forEach(button=>button.addEventListener('click',()=>{
+ const name=button.dataset.claim;
+ if(progress.claim(name)){
+  toast.textContent=name+' desbloqueado! Volte à Arena para adicioná-lo ao seu time.';
+  updateProgress();
+ }
+}));
+updateProgress();
+window.addEventListener('storage',event=>{if(event.key==='pokemon-arena-progression-v1')updateProgress()});
 buttons.forEach(button=>button.addEventListener('click',()=>{
  const category=button.dataset.category,show=category==='all'||category==='unlock';
  buttons.forEach(b=>{const active=b===button;b.classList.toggle('active',active);b.setAttribute('aria-pressed',String(active))});
