@@ -30,6 +30,7 @@ function setup(progress=progressStore().api){
  return {state,...engine};
 }
 const move=(i,name)=>{const m=M[i].find(m=>m[0]===name);assert.ok(m,'Golpe não encontrado: '+name);return m};
+test('Todos os danos de habilidades são múltiplos de 5',()=>{for(const moves of M)for(const move of moves)assert.equal(move[1]%5,0,move[0]+' possui dano quebrado');});
 test('Starter e evoluções têm danos e custos balanceados',()=>{
  for(const i of [0,1,2])assert.equal(move(i,'Investida')[1],25);
  assert.deepEqual(move(2,'Chicote de Vinha').slice(1,3),[35,'FA']);
@@ -47,7 +48,7 @@ test('Esquiva é universal sem substituir as quatro habilidades',()=>{
 test('IA usa somente golpes que pode pagar',()=>{
  const h=setup(),s=h.state;s.team=[h.unit(0)];s.foes=[h.unit(9)];
  s.enemyEnergy={F:1,E:0,T:0,V:0};h.resolveTurn();
- assert.equal(s.team[0].hp,82);
+ assert.equal(s.team[0].hp,80);
  assert.ok(s.logs.some(x=>x.includes('Ataque Rápido')));
  assert.ok(!s.logs.some(x=>x.includes('usou Raio')));
 });
@@ -87,10 +88,11 @@ test('Sobrecarga exige uma energia adicional e expira após a ação',()=>{
  assert.deepEqual(h.energyPlan(move(0,'Investida'),{F:1,E:1,T:0,V:0},s.foes[0]),['F','E']);
  h.attack(s.foes[0],s.team[0],move(0,'Investida'));assert.equal(s.foes[0].costTax,0);
 });
-test('Mordida de Ekans rouba uma energia do adversário',()=>{
+test('Mordida de Ekans remove energia sem transferir para o atacante',()=>{
  const h=setup(),s=h.state;s.team=[h.unit(8)];s.foes=[h.unit(0)];
  s.enemyEnergy.E=1;h.attack(s.team[0],s.foes[0],move(8,'Mordida'));
- assert.equal(s.enemyEnergy.E,0);assert.equal(s.energy.E,1);
+ assert.equal(s.enemyEnergy.E,0);assert.equal(s.energy.E,0);
+ assert.equal(s.foes[0].hp,80);
 });
 test('Pó do Sono acerta toda a equipe menos os invulneráveis',()=>{
  const h=setup(),s=h.state;s.team=[h.unit(2)];s.foes=[h.unit(0),h.unit(1),h.unit(4)];
