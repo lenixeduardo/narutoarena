@@ -3,72 +3,133 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<meta name="theme-color" content="#0d3765">
-<meta name="description" content="Missões de desbloqueio de Pokémon no Pokémon Arena.">
+<meta name="theme-color" content="#0d2038">
+<meta name="description" content="Missões e desafios de desbloqueio do Pokémon Arena.">
 <title>Missões | Pokémon Arena</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
 <style>
-:root{font-family:Inter,system-ui,Arial,sans-serif;color:#112641;background:#dbe9f4;font-synthesis:none}
-*{box-sizing:border-box}body{margin:0;min-height:100vh;background:linear-gradient(180deg,#083c80a8,#dcecf1d9 40%,#f1f6fa),url('assets/home-background.webp') center top/cover fixed no-repeat}
-button,a{font:inherit}a{color:inherit;text-decoration:none}
-.shell{width:min(1180px,calc(100% - 32px));margin:0 auto;padding:26px 0 55px}
-.topbar{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:44px}
-.brand{display:flex;align-items:center;gap:11px;color:white;font-size:14px;font-weight:900;letter-spacing:.5px;text-shadow:0 2px 8px #06244c}
-.ball{width:31px;height:31px;border:3px solid #102d4b;border-radius:50%;background:linear-gradient(#ef3547 0 44%,#152e47 44% 56%,white 56%);position:relative;display:inline-block;flex:none;box-shadow:0 2px 5px #05244366}
-.ball:after{content:'';position:absolute;width:9px;height:9px;top:50%;left:50%;transform:translate(-50%,-50%);border-radius:50%;background:white;border:2px solid #122e4a}
-.back{color:#eaf5ff;border:1px solid #9bc4e4a0;background:#0d345fe6;padding:11px 16px;border-radius:8px;font-size:12px;font-weight:800;transition:background .2s}
-.back:hover{background:#205588}.back:focus-visible,.card:focus-visible{outline:3px solid #ffcd52;outline-offset:3px}
-.hero{color:white;text-align:center;margin:0 auto 31px;max-width:720px;text-shadow:0 2px 10px #052953}
-.eyebrow{font-size:12px;font-weight:900;letter-spacing:2.6px;color:#ffe28c;text-transform:uppercase}
-h1{font-size:clamp(32px,5vw,54px);line-height:1.05;margin:11px 0 12px;font-weight:900}
-.hero p{font-size:15px;line-height:1.6;margin:0;color:#f4faff}
-.mission-list{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:19px}
-.card{position:relative;overflow:hidden;background:#f8fcff;border:1px solid #e7f0f8;border-radius:15px;box-shadow:0 12px 30px #0b315652,0 3px 0 #c6dce9;min-width:0}
-.art{height:244px;position:relative;overflow:hidden;isolation:isolate}
-.art:before{content:'';position:absolute;inset:0;z-index:-2}
-.card.fire .art:before{background:radial-gradient(ellipse at 67% 45%,#ffb85b 0%,transparent 39%),linear-gradient(145deg,#f9cc8b,#ec7b55 50%,#6b8062)}
-.card.water .art:before{background:radial-gradient(ellipse at 58% 54%,#a7f5ff,transparent 50%),linear-gradient(140deg,#96d7ea,#237db4 67%,#1d517d)}
-.card.sun .art:before{background:radial-gradient(circle at 72% 16%,#fff7a3,transparent 33%),linear-gradient(145deg,#e7f5ad,#77bf86 60%,#4d966e)}
-.art:after{content:'';position:absolute;inset:0;background:linear-gradient(0deg,#061e38aa,transparent 43%);pointer-events:none}
-.art img{position:absolute;inset:4% 0 0;width:100%;height:98%;object-fit:contain;filter:drop-shadow(0 13px 12px #11263d50)}
-.tag{position:absolute;top:15px;left:15px;z-index:1;border-radius:20px;background:#0b284adf;color:#fff;padding:8px 11px;font-size:10px;font-weight:900;letter-spacing:.7px;display:flex;align-items:center;gap:6px;border:1px solid #ffffff40}
-.tag:before{content:'◆';color:#ffdb73}
-.art-label{position:absolute;z-index:1;bottom:16px;left:19px;color:white;font-size:12px;font-weight:800;letter-spacing:1.6px;text-shadow:0 2px 7px #001}
-.body{padding:23px 21px 20px}
-.number{font-size:11px;color:#527493;font-weight:900;letter-spacing:1.2px}
-h2{font-size:21px;line-height:1.25;margin:8px 0 12px;letter-spacing:-.5px}
-.desc{font-size:13px;color:#536b83;line-height:1.6;margin:0;min-height:84px}
-.condition{display:flex;align-items:center;gap:11px;padding:13px 0;border-top:1px solid #e0eaf2;border-bottom:1px solid #e0eaf2;margin:16px 0}
-.condition-icon{width:38px;height:38px;display:grid;place-items:center;border-radius:9px;background:#eaf2fa;color:#183d61;font-size:20px;flex:none}
-.condition strong{display:block;font-size:12px}.condition span{display:block;font-size:11px;color:#647c93;margin-top:4px}
-.progress-head{display:flex;justify-content:space-between;align-items:center;font-size:12px;font-weight:800;margin:0 0 9px}
-.progress-head span:last-child{color:#55708c}
-.progress{height:9px;background:#e4edf4;border-radius:10px;overflow:hidden;border:1px solid #d5e3ed}
-.progress>span{display:block;height:100%;width:0;background:linear-gradient(90deg,#e84055,#ffbf54)}
-.reward{display:flex;align-items:center;gap:9px;margin-top:17px;padding:12px;border:1px solid #dce8f2;background:#f0f6fb;border-radius:9px}
-.reward-icon{font-size:22px}
-.reward strong{display:block;font-size:12px}.reward small{font-size:11px;color:#6b8094}
-.footer{margin-top:17px;padding-top:15px;border-top:1px solid #e4ebf1;display:flex;justify-content:space-between;align-items:center;gap:8px}
-.status{color:#855c13;font-size:11px;font-weight:900;background:#fff1cf;border-radius:6px;padding:8px 10px}
-.pill{color:#56708a;font-size:11px;font-weight:800}
-.note{text-align:center;margin:26px auto 0;color:#e9f5ff;text-shadow:0 1px 6px #092746;font-size:12px;line-height:1.6;max-width:760px}
-@media(max-width:950px){.mission-list{grid-template-columns:repeat(2,minmax(0,1fr))}.topbar{margin-bottom:30px}}
-@media(max-width:620px){.shell{width:min(100% - 24px,450px);padding-top:15px}.topbar{margin-bottom:28px}.brand{font-size:11px}.back{padding:9px 11px;font-size:11px}.hero{margin-bottom:22px}.hero p{font-size:13px}.mission-list{grid-template-columns:1fr;gap:15px}.art{height:220px}.desc{min-height:0}.body{padding:20px}.note{color:#123b62;text-shadow:none}}
-@media(prefers-reduced-motion:reduce){*{scroll-behavior:auto!important;transition:none!important}}
+:root{font-family:Inter,Arial,sans-serif;color:#142544;background:#edf3f9;font-synthesis:none}
+*{box-sizing:border-box}body{margin:0;min-height:100vh}button,a{font:inherit}a{color:inherit;text-decoration:none}button{cursor:pointer}svg{width:21px;height:21px;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round;fill:none;flex:none}
+.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+.navbar{height:72px;background:#0e1e33;color:#f6f9ff;display:flex;align-items:center;gap:26px;padding:0 max(25px,calc((100vw - 1460px)/2));box-shadow:0 4px 13px #071b3452;position:relative;z-index:5}
+.logo{display:flex;align-items:center;gap:10px;white-space:nowrap;margin-right:34px}
+.logo-pokemon{font-size:29px;font-weight:900;font-style:italic;letter-spacing:-1.8px;color:#ffdb36;text-shadow:-2px -2px 0 #1b59a3,2px -2px 0 #1b59a3,-2px 2px 0 #1b59a3,2px 2px 0 #1b59a3,0 4px 0 #123b79}
+.logo-arena{font-size:27px;font-weight:800;letter-spacing:1px}
+.navlinks{display:flex;align-items:stretch;height:100%;gap:8px;flex:1}
+.navlinks a,.navlinks button{display:flex;align-items:center;justify-content:center;gap:10px;color:#f7faff;background:transparent;border:0;padding:0 18px;white-space:nowrap;font-size:14px;font-weight:500;border-radius:8px 8px 0 0}
+.navlinks .active{background:linear-gradient(130deg,#7d273d,#b32c45);box-shadow:inset 0 -4px 0 #ef4053;font-weight:700}
+.navlinks a:not(.active):hover{background:#1c3551}
+.navlinks button:disabled{opacity:.75;cursor:not-allowed}
+.account{display:flex;align-items:center;gap:12px;white-space:nowrap;margin-left:auto}
+.avatar{display:grid;place-items:center;width:48px;height:48px;border-radius:50%;overflow:hidden;background:#4c9ed1;border:2px solid #c8edff}
+.avatar img{width:100%;height:100%;object-fit:cover;object-position:center 24%}
+.account-name{font-size:13px;font-weight:800}.account-level{font-size:12px;color:#c7d4e2;margin-top:2px}
+.account-chevron{margin-left:16px;width:17px;height:17px}
+.hero{height:211px;position:relative;background:linear-gradient(90deg,#10385c 0%,#1e5881 52%,#65b7e8 100%);overflow:hidden}
+.hero-art{position:absolute;inset:0;background-image:url('assets/mission-banner-full.jpg');background-size:cover;background-position:center center;background-repeat:no-repeat}
+.hero:after{content:'';position:absolute;inset:0;background:linear-gradient(90deg,#081e34 0%,#081e34 27%,#081e34e0 32%,#081e3480 43%,transparent 60%);pointer-events:none}
+.hero-content{position:relative;z-index:1;max-width:1460px;margin:0 auto;padding:52px 25px;color:white}
+.hero h1{font-size:54px;line-height:1;margin:0 0 12px;font-weight:900;letter-spacing:-2px;text-shadow:0 3px 7px #0b213777}
+.hero p{font-size:19px;line-height:1.45;margin:0;max-width:470px;text-shadow:0 2px 6px #0b213777}
+.main{position:relative;z-index:2;width:min(calc(100% - 40px),1496px);margin:-1px auto 32px;display:grid;grid-template-columns:300px minmax(0,1fr);min-height:700px;background:#ffffffeb;border:1px solid #dce6f0;border-radius:13px;box-shadow:0 12px 35px #143a6130;overflow:hidden}
+.sidebar{padding:16px 14px;border-right:1px solid #dce5ef;background:#f8fbffb8}
+.sidebar button{width:100%;display:flex;align-items:center;gap:14px;text-align:left;border:0;border-radius:9px;background:transparent;color:#142541;padding:15px 12px;font-size:14px;margin:0 0 2px}
+.sidebar button svg{width:24px;height:24px}
+.sidebar button span:not(.section-ball){flex:1;min-width:0}.sidebar button .section-ball{width:23px;height:23px;flex:none;aspect-ratio:1}
+.sidebar button .count{flex:none;background:#e9eef5;border-radius:18px;min-width:29px;height:29px;display:grid;place-items:center;font-weight:800;font-size:13px}
+.sidebar button.active{background:linear-gradient(100deg,#f32d41,#c61e3b);color:white;box-shadow:0 4px 9px #c5253b27}
+.sidebar button.active .count{color:#d42037;background:white}
+.sidebar button:not(.active):hover{background:#eaf2f9}
+.content{padding:12px 14px 15px;min-width:0}
+.section-title{display:flex;align-items:flex-start;gap:12px;margin:0 9px 12px}
+.section-ball{width:38px;height:38px;position:relative;flex:none;border-radius:50%;border:3px solid #0c2b4f;background:linear-gradient(#ef3548 0 43%,#0c2b4f 43% 56%,white 56%);box-shadow:0 2px 2px #123e5e2b}
+.section-ball:after{content:'';position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:11px;height:11px;border:2px solid #0c2b4f;background:white;border-radius:50%}
+.section-title h2{font-size:21px;font-weight:900;letter-spacing:-.7px;margin:1px 0 3px}
+.section-title p{color:#6b7790;font-size:14px;margin:0;line-height:1.45}
+.missions{display:flex;flex-direction:column;gap:7px}
+.mission{display:grid;grid-template-columns:minmax(220px,41%) minmax(0,1fr) 132px;gap:21px;align-items:center;min-height:192px;padding:10px;border:1px solid #e5ebf3;border-radius:12px;background:#ffffffd9}
+.mission-art{aspect-ratio:469/181;min-height:0;border-radius:7px;background-size:cover;background-position:center;background-repeat:no-repeat;background-color:#d7e9f5;overflow:hidden;box-shadow:inset 0 0 0 1px #1e3a5e14}
+.mission-art.fire{background-image:url('assets/mission-charmeleon-scene.jpg')}.mission-art.water{background-image:url('assets/mission-wartortle-scene.jpg')}.mission-art.sun{background-image:url('assets/mission-ivysaur-scene.jpg')}
+.mission-body{min-width:0;align-self:stretch;display:flex;flex-direction:column;justify-content:center;padding:5px 0}
+.mission h3{font-size:20px;line-height:1.25;font-weight:900;letter-spacing:-.65px;margin:0 0 9px;color:#10284a}
+.mission-desc{font-size:14px;line-height:1.5;color:#65718b;margin:0 0 17px;max-width:560px}
+.requirement{margin-top:auto;display:flex;align-items:center;gap:13px;background:#f0f4f9;border:1px solid #e6ecf3;border-radius:8px;padding:13px 15px;font-size:14px;color:#142441;min-height:51px}
+.requirement svg{width:24px;height:24px}.requirement span{flex:1}.requirement strong{font-weight:700;font-size:15px;white-space:nowrap}
+.mission-aside{align-self:stretch;display:flex;flex-direction:column;align-items:stretch;gap:10px}
+.locked{height:39px;border:1px solid #e1e7ef;border-radius:9px;background:#f0f4f9;color:#142441;display:flex;justify-content:center;align-items:center;gap:9px;font-size:11px;font-weight:700}
+.locked svg{width:16px;height:16px;fill:#142441;stroke:white;stroke-width:1.8}
+.portrait{flex:1;min-height:120px;border-radius:8px;background-size:cover;background-position:center;background-repeat:no-repeat;background-color:#d9e7f4}
+.portrait.fire{background-image:url('assets/mission-charmeleon-portrait.jpg')}.portrait.water{background-image:url('assets/mission-wartortle-portrait.jpg')}.portrait.sun{background-image:url('assets/mission-ivysaur-portrait.jpg')}
+.empty{margin:28px 0;padding:45px 25px;text-align:center;border:1px dashed #cad7e4;border-radius:12px;color:#536b84;background:#f6f9fc}.empty h3{margin:0 0 8px;font-size:18px;color:#173452}.empty p{margin:0;font-size:14px}
+.note{margin:14px 8px 0;color:#73839a;font-size:11px;line-height:1.5}
+@media(max-width:1270px){.navbar{gap:14px}.logo{margin-right:10px}.navlinks{gap:0}.navlinks a,.navlinks button{padding:0 11px}.logo-pokemon{font-size:25px}.logo-arena{font-size:23px}.main{grid-template-columns:245px minmax(0,1fr)}.mission{grid-template-columns:minmax(190px,38%) minmax(0,1fr) 102px;gap:13px}.mission h3{font-size:18px}.mission-desc{font-size:12px}.requirement{padding:9px 10px;font-size:12px}.portrait{min-height:100px}}
+@media(max-width:1150px){.navlinks button{display:none}}
+@media(max-width:1000px){.navlinks button{display:none}.account-chevron{display:none}.navbar{height:66px}.hero{height:205px}.main{grid-template-columns:210px minmax(0,1fr)}.sidebar{padding:10px}.sidebar button{gap:8px;font-size:12px;padding:12px 9px}.mission{grid-template-columns:minmax(160px,43%) minmax(0,1fr);gap:12px}.mission-aside{grid-column:2;grid-row:1;align-self:start;align-items:flex-end}.mission-aside .portrait{display:none}.locked{padding:0 12px;height:31px}.mission-body{grid-column:2;grid-row:1;padding-top:38px}.mission h3{font-size:16px}.mission-desc{margin-bottom:10px}.requirement{font-size:11px}.requirement strong{font-size:12px}}
+@media(max-width:700px){.navbar{padding:0 13px;height:58px;gap:9px}.logo{gap:6px;margin:0}.logo-pokemon{font-size:21px}.logo-arena{font-size:18px}.navlinks{margin-left:auto;flex:none}.navlinks a{font-size:0;padding:0 8px}.navlinks a svg{width:22px;height:22px}.account{display:none}.hero{height:186px}.hero-art{background-position:44% center;background-size:auto 100%}.hero:after{background:linear-gradient(90deg,#071f36e8 0%,#071f36a6 56%,#071f3611)}.hero-content{padding:41px 19px}.hero h1{font-size:37px}.hero p{font-size:13px;max-width:275px}.main{width:calc(100% - 16px);display:block;margin-top:-8px;min-height:0}.sidebar{display:flex;overflow-x:auto;gap:5px;padding:9px;border-right:0;border-bottom:1px solid #dce5ef;scrollbar-width:thin}.sidebar button{flex:none;width:auto;min-width:max-content;padding:9px 10px;margin:0;gap:7px;font-size:11px}.sidebar button svg{width:18px;height:18px}.sidebar button .count{min-width:21px;height:21px;font-size:11px}.content{padding:12px 9px}.section-title{margin:2px 4px 13px}.section-title h2{font-size:18px}.section-title p{font-size:12px}.section-ball{width:32px;height:32px}.mission{grid-template-columns:minmax(0,1fr) 80px;gap:10px;padding:9px;min-height:0}.mission-art{grid-column:1/-1;grid-row:1;aspect-ratio:469/181}.mission-body{grid-column:1;grid-row:2;padding:4px 0 0}.mission h3{font-size:16px;margin:0 0 6px}.mission-desc{font-size:12px;line-height:1.45;margin:0 0 10px}.mission-aside{grid-column:2;grid-row:2;align-items:stretch;padding-top:2px}.mission-aside .portrait{display:block;min-height:80px;aspect-ratio:1}.locked{height:auto;min-height:25px;font-size:9px;padding:4px;gap:4px}.locked svg{width:12px;height:12px}.requirement{padding:8px;gap:7px;font-size:10px;min-height:37px}.requirement svg{width:18px;height:18px}.requirement strong{font-size:11px}.note{font-size:10px}}
+@media(max-width:370px){.mission{grid-template-columns:minmax(0,1fr) 70px}.mission-aside .portrait{min-height:70px}.logo-pokemon{font-size:18px}.logo-arena{font-size:15px}}
+.missions[hidden],.empty[hidden],.note[hidden]{display:none!important}
+@media(prefers-reduced-motion:reduce){*{scroll-behavior:auto!important}}
 </style>
 </head>
 <body>
-<div class="shell">
-<header class="topbar"><a class="brand" href="./index.html" aria-label="Voltar ao Pokémon Arena"><span class="ball" aria-hidden="true"></span> POKÉMON ARENA</a><a class="back" href="./index.html">← VOLTAR À ARENA</a></header>
-<main>
-<section class="hero" aria-labelledby="title"><div class="eyebrow">Desafios de treinador</div><h1 id="title">Missões Pokémon</h1><p>Vença três batalhas consecutivas para desbloquear novos Pokémon e fortalecer sua equipe.</p></section>
-<section class="mission-list" aria-label="Três missões de desbloqueio">
-<article class="card fire"><div class="art"><span class="tag">MISSÃO BLOQUEADA</span><img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/5.png" alt="Charmeleon usando fogo em uma floresta" loading="eager"><span class="art-label">CHARMELEON</span></div><div class="body"><span class="number">MISSÃO 01 / 03</span><h2>Crescendo através do Calor</h2><p class="desc">Charmeleon treina o Lança-Chamas em uma floresta. Prove sua determinação em uma sequência de vitórias para desbloqueá-lo.</p><div class="condition"><div class="condition-icon" aria-hidden="true">⚔</div><div><strong>3 vitórias consecutivas</strong><span>Sem perder entre as batalhas</span></div></div><div class="progress-head"><span>Progresso</span><span>0 / 3</span></div><div class="progress" role="progressbar" aria-label="Progresso da missão Charmeleon" aria-valuenow="0" aria-valuemin="0" aria-valuemax="3"><span></span></div><div class="reward"><span class="reward-icon" aria-hidden="true">◈</span><div><small>RECOMPENSA</small><strong>Desbloquear Charmeleon</strong></div></div><div class="footer"><span class="status">🔒 BLOQUEADA</span><span class="pill">1 POKÉMON</span></div></div></article>
-<article class="card water"><div class="art"><span class="tag">MISSÃO BLOQUEADA</span><img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/8.png" alt="Wartortle" loading="eager"><span class="art-label">WARTORTLE</span></div><div class="body"><span class="number">MISSÃO 02 / 03</span><h2>Evolução Constante</h2><p class="desc">Wartortle aprimora seus movimentos nas águas de um rio. Mostre consistência em batalha para conquistar sua evolução.</p><div class="condition"><div class="condition-icon" aria-hidden="true">⚔</div><div><strong>3 vitórias consecutivas</strong><span>Sem perder entre as batalhas</span></div></div><div class="progress-head"><span>Progresso</span><span>0 / 3</span></div><div class="progress" role="progressbar" aria-label="Progresso da missão Wartortle" aria-valuenow="0" aria-valuemin="0" aria-valuemax="3"><span></span></div><div class="reward"><span class="reward-icon" aria-hidden="true">◈</span><div><small>RECOMPENSA</small><strong>Desbloquear Wartortle</strong></div></div><div class="footer"><span class="status">🔒 BLOQUEADA</span><span class="pill">1 POKÉMON</span></div></div></article>
-<article class="card sun"><div class="art"><span class="tag">MISSÃO BLOQUEADA</span><img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/2.png" alt="Ivysaur" loading="eager"><span class="art-label">IVYSAUR</span></div><div class="body"><span class="number">MISSÃO 03 / 03</span><h2>Força que vem do Sol</h2><p class="desc">Ivysaur absorve a luz do sol entre flores e campos verdes. Supere três confrontos seguidos para adicioná-lo à sua equipe.</p><div class="condition"><div class="condition-icon" aria-hidden="true">⚔</div><div><strong>3 vitórias consecutivas</strong><span>Sem perder entre as batalhas</span></div></div><div class="progress-head"><span>Progresso</span><span>0 / 3</span></div><div class="progress" role="progressbar" aria-label="Progresso da missão Ivysaur" aria-valuenow="0" aria-valuemin="0" aria-valuemax="3"><span></span></div><div class="reward"><span class="reward-icon" aria-hidden="true">◈</span><div><small>RECOMPENSA</small><strong>Desbloquear Ivysaur</strong></div></div><div class="footer"><span class="status">🔒 BLOQUEADA</span><span class="pill">1 POKÉMON</span></div></div></article>
+<svg aria-hidden="true" class="sr-only" xmlns="http://www.w3.org/2000/svg">
+<symbol id="icon-swords" viewBox="0 0 24 24"><path d="m14.5 17.5 3-3L6 3H3v3l11.5 11.5ZM13 19l6 3 3-3-3-6M9.5 6.5 6 10M3 21l7-7M3 18l3 3"/><path d="m14 10 7-7h-5l-5 5"/></symbol>
+<symbol id="icon-flag" viewBox="0 0 24 24"><path d="M4 22V4m0 1c5-4 9 4 16 0v12c-7 4-11-4-16 0"/></symbol>
+<symbol id="icon-cards" viewBox="0 0 24 24"><rect x="7" y="3" width="13" height="18" rx="2"/><path d="M4 7H3v12a2 2 0 0 0 2 2h11M11 7h5m-5 4h5m-5 4h3"/></symbol>
+<symbol id="icon-book" viewBox="0 0 24 24"><path d="M12 5c-3-2-6-2-10-1v16c4-1 7-1 10 1 3-2 6-2 10-1V4c-4-1-7-1-10 1Zm0 0v16M5 8h4m-4 4h4m6-4h4m-4 4h4"/></symbol>
+<symbol id="icon-trophy" viewBox="0 0 24 24"><path d="M7 4h10v7a5 5 0 0 1-10 0V4ZM7 6H3v3a4 4 0 0 0 4 4m10-7h4v3a4 4 0 0 1-4 4m-5 3v4m-5 0h10"/></symbol>
+<symbol id="icon-cart" viewBox="0 0 24 24"><path d="M2 4h2l2 12h13l3-9H5M8 20h.01M18 20h.01"/></symbol>
+<symbol id="icon-lock" viewBox="0 0 24 24"><rect x="5" y="10" width="14" height="12" rx="2"/><path d="M8 10V7a4 4 0 0 1 8 0v3m-4 5v3"/></symbol>
+<symbol id="icon-calendar" viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M7 3v4m10-4v4M3 10h18"/></symbol>
+<symbol id="icon-chevron" viewBox="0 0 24 24"><path d="m6 9 6 6 6-6"/></symbol>
+</svg>
+<header class="navbar">
+<a href="./index.html" class="logo" aria-label="Pokémon Arena, voltar à tela inicial"><span class="logo-pokemon">Pokémon</span><span class="logo-arena">ARENA</span></a>
+<nav class="navlinks" aria-label="Navegação principal">
+<a href="./index.html"><svg><use href="#icon-swords"/></svg>Jogar</a>
+<a href="./missions.html" class="active" aria-current="page"><svg><use href="#icon-flag"/></svg>Missões</a>
+<button type="button" disabled title="Em desenvolvimento"><svg><use href="#icon-cards"/></svg>Decks</button>
+<button type="button" disabled title="Em desenvolvimento"><svg><use href="#icon-book"/></svg>Coleção</button>
+<button type="button" disabled title="Em desenvolvimento"><svg><use href="#icon-trophy"/></svg>Ranking</button>
+<button type="button" disabled title="Em desenvolvimento"><svg><use href="#icon-cart"/></svg>Loja</button>
+</nav>
+<div class="account"><div class="avatar"><img src="assets/mission-avatar.jpg" alt="Avatar do treinador"></div><div><div class="account-name">LenixEduardo</div><div class="account-level">Nv. 1</div></div><svg class="account-chevron"><use href="#icon-chevron"/></svg></div>
+</header>
+<section class="hero" aria-labelledby="page-title"><div class="hero-art" role="img" aria-label="Treinador e Pikachu diante de uma paisagem montanhosa"></div><div class="hero-content"><h1 id="page-title">MISSÕES</h1><p>Complete desafios, evolua no Pokémon Arena e desbloqueie novos Pokémon para o seu time.</p></div></section>
+<main class="main">
+<aside class="sidebar" aria-label="Categorias de missões">
+<button type="button" class="active" data-category="all" aria-pressed="true"><span class="section-ball" style="width:23px;height:23px;border-width:2px"></span><span>Todas as Missões</span><b class="count">3</b></button>
+<button type="button" data-category="unlock" aria-pressed="false"><span class="section-ball" style="width:23px;height:23px;border-width:2px"></span><span>Desbloqueio de Pokémon</span><b class="count">3</b></button>
+<button type="button" data-category="story" aria-pressed="false"><svg><use href="#icon-book"/></svg><span>História</span></button>
+<button type="button" data-category="battle" aria-pressed="false"><svg><use href="#icon-swords"/></svg><span>Batalhas</span></button>
+<button type="button" data-category="events" aria-pressed="false"><svg><use href="#icon-calendar"/></svg><span>Eventos</span></button>
+</aside>
+<section class="content" aria-label="Lista de missões">
+<header class="section-title"><span class="section-ball" aria-hidden="true"></span><div><h2 id="section-heading">Desbloqueio de Pokémon</h2><p id="section-desc">Complete as missões abaixo para desbloquear novos Pokémon e adicioná-los ao seu time.</p></div></header>
+<div class="missions" id="mission-list">
+<article class="mission" data-mission="unlock"><div class="mission-art fire" role="img" aria-label="Charmeleon usando Lança-Chamas em uma floresta, conforme o mockup"></div><div class="mission-body"><h3>Crescendo através do Calor</h3><p class="mission-desc">Charmeleon evolui quando enfrenta batalhas intensas. Prove sua força e desbloqueie o Charmeleon para o seu time.</p><div class="requirement"><svg aria-hidden="true"><use href="#icon-swords"/></svg><span>Ganhe 3 vitórias em sequência</span><strong>0/3</strong></div></div><div class="mission-aside"><div class="locked"><svg aria-hidden="true"><use href="#icon-lock"/></svg>BLOQUEADO</div><div class="portrait fire" role="img" aria-label="Retrato do Charmeleon"></div></div></article>
+<article class="mission" data-mission="unlock"><div class="mission-art water" role="img" aria-label="Wartortle treinando nas águas de um rio, conforme o mockup"></div><div class="mission-body"><h3>Evolução Constante</h3><p class="mission-desc">Wartortle se torna mais forte ao enfrentar oponentes cada vez mais desafiadores. Prove sua evolução no Pokémon Arena e desbloqueie o Wartortle.</p><div class="requirement"><svg aria-hidden="true"><use href="#icon-swords"/></svg><span>Ganhe 3 vitórias em sequência</span><strong>0/3</strong></div></div><div class="mission-aside"><div class="locked"><svg aria-hidden="true"><use href="#icon-lock"/></svg>BLOQUEADO</div><div class="portrait water" role="img" aria-label="Retrato do Wartortle"></div></div></article>
+<article class="mission" data-mission="unlock"><div class="mission-art sun" role="img" aria-label="Ivysaur em um campo florido sob o sol, conforme o mockup"></div><div class="mission-body"><h3>Força que vem do Sol</h3><p class="mission-desc">Ivysaur se fortalece com a energia do sol. Mostre sua habilidade em batalhas e desbloqueie o Ivysaur para o seu time.</p><div class="requirement"><svg aria-hidden="true"><use href="#icon-swords"/></svg><span>Ganhe 3 vitórias em sequência</span><strong>0/3</strong></div></div><div class="mission-aside"><div class="locked"><svg aria-hidden="true"><use href="#icon-lock"/></svg>BLOQUEADO</div><div class="portrait sun" role="img" aria-label="Retrato do Ivysaur"></div></div></article>
+</div>
+<div class="empty" id="empty-state" hidden><h3>Nenhuma missão disponível</h3><p>Esta categoria ainda não possui missões cadastradas.</p></div>
+<p class="note" id="progress-note">Progresso ilustrativo: a contagem de vitórias ainda não está conectada ao motor de batalhas.</p>
 </section>
-<p class="note">O progresso das missões será sincronizado com as vitórias consecutivas quando o sistema de conquistas estiver conectado ao motor de batalha. Nenhuma recompensa é concedida nesta versão visual.</p>
-</main></div>
-</body></html>
+</main>
+<script>
+(function(){
+const buttons=[...document.querySelectorAll('[data-category]')];
+const list=document.getElementById('mission-list'),empty=document.getElementById('empty-state');
+const heading=document.getElementById('section-heading'),desc=document.getElementById('section-desc'),note=document.getElementById('progress-note');
+const labels={all:'Desbloqueio de Pokémon',unlock:'Desbloqueio de Pokémon',story:'História',battle:'Batalhas',events:'Eventos'};
+buttons.forEach(button=>button.addEventListener('click',()=>{
+ const category=button.dataset.category,show=category==='all'||category==='unlock';
+ buttons.forEach(b=>{const active=b===button;b.classList.toggle('active',active);b.setAttribute('aria-pressed',String(active))});
+ heading.textContent=labels[category];desc.textContent=show?'Complete as missões abaixo para desbloquear novos Pokémon e adicioná-los ao seu time.':'Missões desta categoria serão adicionadas futuramente.';
+ list.hidden=!show;empty.hidden=show;note.hidden=!show;
+}));
+})();
+</script>
+</body>
+</html>
