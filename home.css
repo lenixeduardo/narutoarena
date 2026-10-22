@@ -252,3 +252,10 @@ body.home-mode .app{padding-bottom:0!important}
  .home-poke.locked .home-locked-label small{font-size:7px}
  .home-poke.locked .home-lock-symbol{width:21px;height:21px;top:3px;right:3px}
 }
+
+/* v1.4 — tela inicial sem itens sobre os quatro botões */
+.home-container{padding-top:0}
+.home-toolbar,.home-kicker{display:none!important}
+.home-hero{margin-top:0}
+.home-mode-area{margin-top:0}
+@media(max-width:680px){.home-container{padding-top:0}}
