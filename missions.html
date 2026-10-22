@@ -102,9 +102,6 @@
 <aside class="sidebar" aria-label="Categorias de missões">
 <button type="button" class="active" data-category="all" aria-pressed="true"><span class="section-ball" style="width:23px;height:23px;border-width:2px"></span><span>Todas as Missões</span><b class="count">3</b></button>
 <button type="button" data-category="unlock" aria-pressed="false"><span class="section-ball" style="width:23px;height:23px;border-width:2px"></span><span>Desbloqueio de Pokémon</span><b class="count">3</b></button>
-<button type="button" data-category="story" aria-pressed="false"><svg><use href="#icon-book"/></svg><span>História</span></button>
-<button type="button" data-category="battle" aria-pressed="false"><svg><use href="#icon-swords"/></svg><span>Batalhas</span></button>
-<button type="button" data-category="events" aria-pressed="false"><svg><use href="#icon-calendar"/></svg><span>Eventos</span></button>
 </aside>
 <section class="content" aria-label="Lista de missões">
 <header class="section-title"><span class="section-ball" aria-hidden="true"></span><div><h2 id="section-heading">Desbloqueio de Pokémon</h2><p id="section-desc">Complete as missões abaixo para desbloquear novos Pokémon e adicioná-los ao seu time.</p></div></header>
@@ -122,7 +119,7 @@
 const buttons=[...document.querySelectorAll('[data-category]')];
 const list=document.getElementById('mission-list'),empty=document.getElementById('empty-state');
 const heading=document.getElementById('section-heading'),desc=document.getElementById('section-desc'),note=document.getElementById('progress-note');
-const labels={all:'Desbloqueio de Pokémon',unlock:'Desbloqueio de Pokémon',story:'História',battle:'Batalhas',events:'Eventos'};
+const labels={all:'Desbloqueio de Pokémon',unlock:'Desbloqueio de Pokémon'};
 buttons.forEach(button=>button.addEventListener('click',()=>{
  const category=button.dataset.category,show=category==='all'||category==='unlock';
  buttons.forEach(b=>{const active=b===button;b.classList.toggle('active',active);b.setAttribute('aria-pressed',String(active))});
