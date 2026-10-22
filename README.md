@@ -26,13 +26,15 @@ Cada Pokémon possui quatro habilidades. As habilidades podem causar dano, conce
 | Energia vital (V) | Recurso adicional para custos coringa |
 | Custo coringa (A, preto) | Pode ser pago com qualquer energia disponível; não constitui uma reserva separada |
 
-**Efeitos implementados:** sono e atordoamento (perda de ação), veneno e queimadura (-5 HP por turno), enfraquecimento (próximo dano reduzido à metade), escudo absorvível, Esquiva universal (invulnerabilidade durante a rodada inteira), roubo de energia (Mordida de Ekans), Sobrecarga (+1 energia coringa na próxima ação, aplicada por Choque do Trovão de Pikachu) e remoção de efeitos negativos por Casco Duro.
+**Efeitos implementados:** sono e atordoamento (perda de ação), veneno e queimadura (-5 HP por turno), enfraquecimento (próximo dano reduzido à metade), escudo absorvível, Esquiva universal (invulnerabilidade durante a rodada inteira), remoção de energia adversária sem transferência (Mordida de Ekans), Sobrecarga (+1 energia coringa na próxima ação, aplicada por Choque do Trovão de Pikachu) e remoção de efeitos negativos por Casco Duro.
 
 A IA recebe um orçamento independente de três energias por rodada, utiliza o mesmo cálculo de custos do jogador, respeita sono, atordoamento e Sobrecarga, e pode optar por defesa. Ataques em área respeitam invulnerabilidade. Casco Duro acumula no máximo 50 pontos de escudo.
 
 **Ainda não implementados:** condição Molhado, escudo indestrutível e regras avançadas de prioridade/recarga. Esses efeitos não devem ser anunciados como funcionais na interface.
 
 ### Balanceamento dos iniciais (valores implementados)
+
+**Regra global:** habilidades ofensivas usam exclusivamente valores de dano em múltiplos de 5 (5, 10, 15, 20, 25 etc.). Reduções por enfraquecimento também são arredondadas para múltiplos de 5. A Mordida de Ekans remove uma energia adversária sem acrescentá-la ao atacante.
 
 | Pokémon | Habilidade | Dano | Custo / efeito |
 | --- | --- | --- | --- |
@@ -42,13 +44,13 @@ A IA recebe um orçamento independente de três energias por rodada, utiliza o m
 | Bulbasaur | Chicote de Vinha | 35 | 1 física + 1 aleatória |
 | Squirtle | Investida | 25 | Ataque físico |
 | Squirtle | Casco Duro | — | 25 de escudo absorvível, máximo 50; remove status negativos |
-| Squirtle | Jato d’Água | 23 | 1 energia especial |
+| Squirtle | Jato d’Água | 25 | 1 energia especial |
 | Squirtle | Hidro Bomba | 35 | 2 energias especiais |
 | Charmander | Investida | 25 | Ataque físico |
 
-Charmander utiliza Lança-Chamas (24 de dano, 1 energia especial) e pode aplicar queimadura. A habilidade Investida dos três iniciais causa 25 de dano.
+Charmander utiliza Lança-Chamas (25 de dano, 1 energia especial) e pode aplicar queimadura. A habilidade Investida dos três iniciais causa 25 de dano.
 
-**Evoluções desbloqueáveis:** Charmeleon (Lança-Chamas 29), Wartortle (Hidro Bomba 40) e Ivysaur (Raio Solar 65). Os golpes ofensivos equivalentes recebem um ganho de aproximadamente 5 pontos de dano sem reduzir o custo de energia.
+**Evoluções desbloqueáveis:** Charmeleon (Lança-Chamas 30), Wartortle (Hidro Bomba 40) e Ivysaur (Raio Solar 65). Os golpes ofensivos equivalentes recebem um ganho de aproximadamente 5 pontos de dano sem reduzir o custo de energia.
 
 **Esquiva:** Pokémon com três golpes próprios possuem Esquiva como quarta habilidade. Pokémon com quatro golpes próprios têm a mesma ação defensiva disponível separadamente durante a batalha, preservando os quatro golpes exibidos.
 
@@ -86,7 +88,7 @@ Com Node.js 22 ou superior:
 node --test tests/*.test.mjs
 ```
 
-A suíte cobre regras dos iniciais, ganhos das evoluções, custos coringa, Sobrecarga, roubo de energia, invulnerabilidade, escudos, efeitos em área, IA com orçamento próprio e a sequência de três vitórias para resgatar Pokémon. O workflow `Validate Pokemon Skills` executa esses testes em alterações relevantes.
+A suíte cobre regras dos iniciais, ganhos das evoluções, custos coringa, Sobrecarga, remoção de energia, invulnerabilidade, escudos, efeitos em área, IA com orçamento próprio e a sequência de três vitórias para resgatar Pokémon. O workflow `Validate Pokemon Skills` executa esses testes em alterações relevantes.
 
 ## Missões e desbloqueios
 
